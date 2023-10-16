@@ -3,7 +3,7 @@ name: "Fire Knight"
 version: "1.0.0"
 synopsis: "A 2d action game written in OCaml."
 description: "Description."
-maintainers: ["Andrew Cheung <aec295@cornell.edu>, Jason Mun <jjm493@cornell.edu>, Brandon O'Connor <bo9@cornell.edu>"]
+maintainers: ["Andrew Cheung <aec295@cornell.edu>, Jason Mun <jjm493@cornell.edu>, Brandon O'Connor <bwo9@cornell.edu>"]
 authors: ["Andrew Cheung, Jason Mun, Brandon O'Connor"]
 license: "MIT"
 build: [
