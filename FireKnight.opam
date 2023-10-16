@@ -1,0 +1,15 @@
+opam-version: "2.0"
+name: "Fire Knight"
+version: "1.0.0"
+synopsis: "A 2d action game written in OCaml."
+description: "Description."
+maintainers: ["Andrew Cheung <aec295@cornell.edu>, Jason Mun <jjm493@cornell.edu>, Brandon O'Connor <bo9@cornell.edu>"]
+authors: ["Andrew Cheung, Jason Mun, Brandon O'Connor"]
+license: "MIT"
+build: [
+  ["dune" "build" "-p" name "-j" jobs]
+]
+depends: [
+  "ocaml" {>= "4.08.0"}
+  "raylib" {>= "3.5.0"}
+]

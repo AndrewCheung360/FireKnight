@@ -1,0 +1,4 @@
+(library
+ (name fireknight)
+ (public_name FireKnight)
+ (libraries raylib))
