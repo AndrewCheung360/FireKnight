@@ -9,8 +9,8 @@ let position = ref (Vector2.create 0. (-500.))
 let src_rect = Rectangle.create 100. 83. 60. 44.
 let dest_rect = Rectangle.create 0. 0. 240. 176.
 let vel = Constants.move_vel
-let left_boundary = Vector2.create 0. (-500.)
-let right_boundary = Vector2.create (-960.) (-500.)
+let left_boundary = Vector2.create 0. 0.
+let right_boundary = Vector2.create (-960.) 0.
 
 let setup () =
   init_window width height "Fire Knight";
@@ -24,9 +24,8 @@ let setup () =
 
 let handle_input () =
   let new_position =
-    if is_key_down Key.Right then
-      Vector2.add !position (Vector2.create (-.vel) 0.0)
-    else if is_key_down Key.Left then
+    if is_key_down Key.D then Vector2.add !position (Vector2.create (-.vel) 0.0)
+    else if is_key_down Key.A then
       Vector2.add !position (Vector2.create vel 0.0)
     else !position
   in
