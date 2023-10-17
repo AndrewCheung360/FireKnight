@@ -1,5 +1,0 @@
-(lang dune 3.11)
-(name FireKnight)
-(version 1.0.0)
-(sections (lib .) (doc ../../doc/FireKnight))
-(files (lib (META dune-package opam)) (doc (README.md)))
