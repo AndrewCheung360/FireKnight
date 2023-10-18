@@ -1,0 +1,89 @@
+{
+  "idle":{
+    "frames":[{
+      "frame_x" : 100.00,
+      "frame_y" : 83.00,
+      "frame_width" : 60.00,
+      "frame_height" : 44.00
+    },
+    { "frame_x" : 388.00, "frame_y" : 83.00, "frame_width" : 60.00, "frame_height" : 44.00 },
+    { "frame_x" : 676.00, "frame_y" : 83.00, "frame_width" : 60.00, "frame_height" : 44.00 },
+    { "frame_x" : 964.00, "frame_y" : 83.00, "frame_width" : 60.00, "frame_height" : 44.00 },
+    {
+      "frame_x" : 1252.00,
+      "frame_y" : 83.00,
+      "frame_width" : 60.00,
+      "frame_height" : 44.00
+    },
+    {
+      "frame_x" : 1540.00,
+      "frame_y" : 84.00,
+      "frame_width" : 60.00,
+      "frame_height" : 43.00
+    },
+    {
+      "frame_x" : 1828.00,
+      "frame_y" : 84.00,
+      "frame_width" : 60.00,
+      "frame_height" : 43.00
+    },
+    {
+      "frame_x" : 2116.00,
+      "frame_y" : 84.00,
+      "frame_width" : 60.00,
+      "frame_height" : 43.00
+    }],
+    "durations":[0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+  },
+  "run":{
+    "frames":[{
+      "frame_x" : 101.0,
+      "frame_y" : 211.0,
+      "frame_width" : 58.0,
+      "frame_height" : 44.0
+    },
+    {
+      "frame_x" : 390.0,
+      "frame_y" : 210.0,
+      "frame_width" : 62.0,
+      "frame_height" : 43.0
+    },
+    {
+      "frame_x" : 679.0,
+      "frame_y" : 211.0,
+      "frame_width" : 60.0,
+      "frame_height" : 44.0
+    },
+    {
+      "frame_x" : 966.0,
+      "frame_y" : 212.0,
+      "frame_width" : 57.0,
+      "frame_height" : 43.0
+    },
+    {
+      "frame_x" : 1253.0,
+      "frame_y" : 211.0,
+      "frame_width" : 58.0,
+      "frame_height" : 44.0
+    },
+    {
+      "frame_x" : 1541.0,
+      "frame_y" : 210.0,
+      "frame_width" : 58.0,
+      "frame_height" : 43.0
+    },
+    {
+      "frame_x" : 1829.0,
+      "frame_y" : 211.0,
+      "frame_width" : 58.0,
+      "frame_height" : 44.0
+    },
+    {
+      "frame_x" : 2117.0,
+      "frame_y" : 212.0,
+      "frame_width" : 58.0,
+      "frame_height" : 43.0
+    }],
+    "durations":[ 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+  }
+}
