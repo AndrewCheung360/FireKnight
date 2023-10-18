@@ -1,4 +1,4 @@
-module Animatedsprite = struct
+module AnimatedSprite = struct
   open Raylib
   open Constants
 
