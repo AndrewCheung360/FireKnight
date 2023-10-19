@@ -29,4 +29,5 @@ module KnightFrames = struct
   let idle = FrameDataLoader.load_frame_data jsonfile "idle"
   let run = FrameDataLoader.load_frame_data jsonfile "run"
   let atk1 = FrameDataLoader.load_frame_data jsonfile "atk1"
+  let atk2 = FrameDataLoader.load_frame_data jsonfile "atk2"
 end
