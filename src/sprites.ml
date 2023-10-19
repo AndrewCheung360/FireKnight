@@ -71,4 +71,8 @@ module AnimatedSprite = struct
     Rectangle.create 0. 0.
       (get_src_width anim *. anim.scale)
       (get_src_height anim *. anim.scale)
+
+  let is_animation_finished anim =
+    let frames, _ = Hashtbl.find anim.animations anim.current_animation in
+    if anim.current_frame = Array.length frames - 1 then true else false
 end
