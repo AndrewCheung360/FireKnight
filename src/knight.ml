@@ -18,6 +18,7 @@ module Knight = struct
     let knight_animations = Hashtbl.create 10 in
     Hashtbl.add knight_animations "idle" idle;
     Hashtbl.add knight_animations "run" run;
+    Hashtbl.add knight_animations "attack_1" atk1;
 
     let animations =
       Sprites.AnimatedSprite.create knight_spritesheet knight_animations
@@ -45,9 +46,29 @@ module Knight = struct
     knight.velocity <- Vector2.create vel_x (Vector2.y knight.velocity);
     knight.position <- Vector2.create new_x (Vector2.y knight.position)
 
+  let handle_attack_1 knight =
+    if Sprites.AnimatedSprite.is_animation_finished knight.animations then begin
+      knight.state <- Idle;
+      Sprites.AnimatedSprite.switch_animation knight.animations "idle"
+    end
+    else Sprites.AnimatedSprite.switch_animation knight.animations "attack_1"
+
+  let handle_key_input knight =
+    if
+      (not (Sprites.AnimatedSprite.is_animation_finished knight.animations))
+      && knight.state <> Idle && knight.state <> RunRight
+      && knight.state <> RunLeft
+    then knight.state
+    else if is_key_pressed Key.J then Attack1Right
+    else if is_key_down Key.D then RunRight
+    else if is_key_down Key.A then RunLeft
+    else Idle
+
   let handle_input knight =
-    knight.state <- handle_key_input ();
-    if knight.state = RunRight || knight.state = RunLeft then handle_run knight
+    knight.state <- handle_key_input knight;
+    if knight.state = Attack1Right then handle_attack_1 knight
+    else if knight.state = RunRight || knight.state = RunLeft then
+      handle_run knight
     else handle_idle knight
 
   let update knight =
