@@ -1,3 +1,4 @@
+open Fireknight
 open Constants
 open Raylib
 open Knight

@@ -22,6 +22,8 @@ module Knight = struct
     Hashtbl.add knight_animations "attack_2" atk2;
     Hashtbl.add knight_animations "jump" jump;
     Hashtbl.add knight_animations "fall" fall;
+    Hashtbl.add knight_animations "attack_3" atk3;
+    Hashtbl.add knight_animations "ult" ult;
 
     let animations =
       Sprites.AnimatedSprite.create knight_spritesheet knight_animations
@@ -110,6 +112,20 @@ module Knight = struct
     let new_y = max (Vector2.y new_position) Constants.ground_y in
     knight.position <- Vector2.create (Vector2.x knight.position) new_y
 
+  let handle_attack_3 knight =
+    if Sprites.AnimatedSprite.is_animation_finished knight.animations then begin
+      knight.state <- Idle;
+      Sprites.AnimatedSprite.switch_animation knight.animations "idle"
+    end
+    else Sprites.AnimatedSprite.switch_animation knight.animations "attack_3"
+
+  let handle_ultimate knight =
+    if Sprites.AnimatedSprite.is_animation_finished knight.animations then begin
+      knight.state <- Idle;
+      Sprites.AnimatedSprite.switch_animation knight.animations "idle"
+    end
+    else Sprites.AnimatedSprite.switch_animation knight.animations "ult"
+
   let handle_key_input knight =
     apply_grav knight;
     if
@@ -122,6 +138,10 @@ module Knight = struct
     else if is_key_pressed Key.K then
       if Vector2.y knight.position = Constants.ground_y then Attack2Right
       else knight.state
+    else if is_key_pressed Key.J then Attack1Right
+    else if is_key_pressed Key.K then Attack2Right
+    else if is_key_pressed Key.L then Attack3Right
+    else if is_key_pressed Key.U then UltimateRight
     else if is_key_down Key.D then RunRight
     else if is_key_down Key.A then RunLeft
     else if is_key_down Key.Space then
@@ -139,6 +159,8 @@ module Knight = struct
       handle_jump knight
     end
     else if knight.state = Falling then handle_fall knight
+    else if knight.state = Attack3Right then handle_attack_3 knight
+    else if knight.state = UltimateRight then handle_ultimate knight
     else if knight.state = RunRight || knight.state = RunLeft then
       handle_run knight
     else begin
