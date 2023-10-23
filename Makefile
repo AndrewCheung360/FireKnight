@@ -3,6 +3,7 @@
 .PHONY: test check
 
 build:
+	dune clean
 	dune build
 
 code:
@@ -29,7 +30,6 @@ clean:
 
 doc:
 	dune build @doc
-
-opendoc: doc
 	@bash opendoc.sh
+
 
