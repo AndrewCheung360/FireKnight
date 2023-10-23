@@ -94,7 +94,8 @@ module Knight = struct
   let handle_fall knight =
     if Vector2.y knight.velocity > 0. then
       Sprites.AnimatedSprite.switch_animation knight.animations "jump"
-    else Sprites.AnimatedSprite.switch_animation knight.animations "fall"
+    else Sprites.AnimatedSprite.switch_animation knight.animations "fall";
+    knight.velocity <- Vector2.create 0. (Vector2.y knight.velocity)
 
   let apply_grav knight =
     (* Always apply gravity *)
