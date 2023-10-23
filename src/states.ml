@@ -5,10 +5,12 @@ module StateManager = struct
     | RunLeft
     | Attack1Right
     | Attack2Right
+    | Jump
+    | Falling
 
   type t = state
 
-  let loop_states = [ Idle; RunRight; RunLeft ]
+  let loop_states = [ Idle; RunRight; RunLeft; Falling ]
   let is_loop_state state = List.mem state loop_states
 
   (* let handle_key_input () = if is_key_pressed Key.J then Attack1Right else if
