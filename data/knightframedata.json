@@ -1,236 +1,356 @@
 {
-  "idle":{
-    "frames":[{
-      "frame_x" : 100.00,
-      "frame_y" : 83.00,
-      "frame_width" : 60.00,
-      "frame_height" : 44.00
-    },
-    { "frame_x" : 388.00, "frame_y" : 83.00, "frame_width" : 60.00, "frame_height" : 44.00 },
-    { "frame_x" : 676.00, "frame_y" : 83.00, "frame_width" : 60.00, "frame_height" : 44.00 },
-    { "frame_x" : 964.00, "frame_y" : 83.00, "frame_width" : 60.00, "frame_height" : 44.00 },
-    {
-      "frame_x" : 1252.00,
-      "frame_y" : 83.00,
-      "frame_width" : 60.00,
-      "frame_height" : 44.00
-    },
-    {
-      "frame_x" : 1540.00,
-      "frame_y" : 84.00,
-      "frame_width" : 60.00,
-      "frame_height" : 43.00
-    },
-    {
-      "frame_x" : 1828.00,
-      "frame_y" : 84.00,
-      "frame_width" : 60.00,
-      "frame_height" : 43.00
-    },
-    {
-      "frame_x" : 2116.00,
-      "frame_y" : 84.00,
-      "frame_width" : 60.00,
-      "frame_height" : 43.00
-    }],
-    "durations":[0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+  "idle": {
+    "frames": [
+      {
+        "frame_x": 100.00,
+        "frame_y": 83.00,
+        "frame_width": 60.00,
+        "frame_height": 44.00
+      },
+      {
+        "frame_x": 388.00,
+        "frame_y": 83.00,
+        "frame_width": 60.00,
+        "frame_height": 44.00
+      },
+      {
+        "frame_x": 676.00,
+        "frame_y": 83.00,
+        "frame_width": 60.00,
+        "frame_height": 44.00
+      },
+      {
+        "frame_x": 964.00,
+        "frame_y": 83.00,
+        "frame_width": 60.00,
+        "frame_height": 44.00
+      },
+      {
+        "frame_x": 1252.00,
+        "frame_y": 83.00,
+        "frame_width": 60.00,
+        "frame_height": 44.00
+      },
+      {
+        "frame_x": 1540.00,
+        "frame_y": 84.00,
+        "frame_width": 60.00,
+        "frame_height": 43.00
+      },
+      {
+        "frame_x": 1828.00,
+        "frame_y": 84.00,
+        "frame_width": 60.00,
+        "frame_height": 43.00
+      },
+      {
+        "frame_x": 2116.00,
+        "frame_y": 84.00,
+        "frame_width": 60.00,
+        "frame_height": 43.00
+      }
+    ],
+    "durations": [
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1
+    ]
   },
-  "run":{
-    "frames":[{
-      "frame_x" : 101.0,
-      "frame_y" : 211.0,
-      "frame_width" : 58.0,
-      "frame_height" : 44.0
-    },
-    {
-      "frame_x" : 390.0,
-      "frame_y" : 210.0,
-      "frame_width" : 62.0,
-      "frame_height" : 43.0
-    },
-    {
-      "frame_x" : 679.0,
-      "frame_y" : 211.0,
-      "frame_width" : 60.0,
-      "frame_height" : 44.0
-    },
-    {
-      "frame_x" : 966.0,
-      "frame_y" : 212.0,
-      "frame_width" : 57.0,
-      "frame_height" : 43.0
-    },
-    {
-      "frame_x" : 1253.0,
-      "frame_y" : 211.0,
-      "frame_width" : 58.0,
-      "frame_height" : 44.0
-    },
-    {
-      "frame_x" : 1541.0,
-      "frame_y" : 210.0,
-      "frame_width" : 58.0,
-      "frame_height" : 43.0
-    },
-    {
-      "frame_x" : 1829.0,
-      "frame_y" : 211.0,
-      "frame_width" : 58.0,
-      "frame_height" : 44.0
-    },
-    {
-      "frame_x" : 2117.0,
-      "frame_y" : 212.0,
-      "frame_width" : 58.0,
-      "frame_height" : 43.0
-    }],
-    "durations":[ 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]
+  "run": {
+    "frames": [
+      {
+        "frame_x": 101.0,
+        "frame_y": 211.0,
+        "frame_width": 58.0,
+        "frame_height": 44.0
+      },
+      {
+        "frame_x": 390.0,
+        "frame_y": 210.0,
+        "frame_width": 62.0,
+        "frame_height": 43.0
+      },
+      {
+        "frame_x": 679.0,
+        "frame_y": 211.0,
+        "frame_width": 60.0,
+        "frame_height": 44.0
+      },
+      {
+        "frame_x": 966.0,
+        "frame_y": 212.0,
+        "frame_width": 57.0,
+        "frame_height": 43.0
+      },
+      {
+        "frame_x": 1253.0,
+        "frame_y": 211.0,
+        "frame_width": 58.0,
+        "frame_height": 44.0
+      },
+      {
+        "frame_x": 1541.0,
+        "frame_y": 210.0,
+        "frame_width": 58.0,
+        "frame_height": 43.0
+      },
+      {
+        "frame_x": 1829.0,
+        "frame_y": 211.0,
+        "frame_width": 58.0,
+        "frame_height": 44.0
+      },
+      {
+        "frame_x": 2117.0,
+        "frame_y": 212.0,
+        "frame_width": 58.0,
+        "frame_height": 43.0
+      }
+    ],
+    "durations": [
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1
+    ]
   },
-  "atk1":{
-    "frames":[{
-      "frame_x" : 109.0,
-      "frame_y" : 982.0,
-      "frame_width" : 51.0,
-      "frame_height" : 41.0
-    },
-    {
-      "frame_x" : 399.0,
-      "frame_y" : 980.0,
-      "frame_width" : 45.0,
-      "frame_height" : 43.0
-    },
-    {
-      "frame_x" : 695.0,
-      "frame_y" : 975.0,
-      "frame_width" : 41.0,
-      "frame_height" : 48.0
-    },
-    {
-      "frame_x" : 982.0,
-      "frame_y" : 963.0,
-      "frame_width" : 48.0,
-      "frame_height" : 60.0
-    },
-    {
-      "frame_x" : 1270.0,
-      "frame_y" : 940.0,
-      "frame_width" : 94.0,
-      "frame_height" : 83.0
-    },
-    {
-      "frame_x" : 1578.0,
-      "frame_y" : 942.0,
-      "frame_width" : 73.0,
-      "frame_height" : 81.0
-    },
-    {
-      "frame_x" : 1866.0,
-      "frame_y" : 950.0,
-      "frame_width" : 72.0,
-      "frame_height" : 73.0
-    },
-    {
-      "frame_x" : 2154.0,
-      "frame_y" : 985.0,
-      "frame_width" : 70.0,
-      "frame_height" : 38.0
-    },
-    {
-      "frame_x" : 2434.0,
-      "frame_y" : 980.0,
-      "frame_width" : 57.0,
-      "frame_height" : 43.0
-    },
-    {
-      "frame_x" : 2719.0,
-      "frame_y" : 979.0,
-      "frame_width" : 33.0,
-      "frame_height" : 44.0
-    },
-    {
-      "frame_x" : 2980.0,
-      "frame_y" : 979.0,
-      "frame_width" : 60.0,
-      "frame_height" : 44.0
-    }],
-    "durations":[ 0.075, 0.075, 0.075, 0.075, 0.05, 0.05, 0.05, 0.05, 0.05,0.05,0.05]
+  "atk1": {
+    "frames": [
+      {
+        "frame_x": 109.0,
+        "frame_y": 982.0,
+        "frame_width": 51.0,
+        "frame_height": 41.0
+      },
+      {
+        "frame_x": 399.0,
+        "frame_y": 980.0,
+        "frame_width": 45.0,
+        "frame_height": 43.0
+      },
+      {
+        "frame_x": 695.0,
+        "frame_y": 975.0,
+        "frame_width": 41.0,
+        "frame_height": 48.0
+      },
+      {
+        "frame_x": 982.0,
+        "frame_y": 963.0,
+        "frame_width": 48.0,
+        "frame_height": 60.0
+      },
+      {
+        "frame_x": 1270.0,
+        "frame_y": 940.0,
+        "frame_width": 94.0,
+        "frame_height": 83.0
+      },
+      {
+        "frame_x": 1578.0,
+        "frame_y": 942.0,
+        "frame_width": 73.0,
+        "frame_height": 81.0
+      },
+      {
+        "frame_x": 1866.0,
+        "frame_y": 950.0,
+        "frame_width": 72.0,
+        "frame_height": 73.0
+      },
+      {
+        "frame_x": 2154.0,
+        "frame_y": 985.0,
+        "frame_width": 70.0,
+        "frame_height": 38.0
+      },
+      {
+        "frame_x": 2434.0,
+        "frame_y": 980.0,
+        "frame_width": 57.0,
+        "frame_height": 43.0
+      },
+      {
+        "frame_x": 2719.0,
+        "frame_y": 979.0,
+        "frame_width": 33.0,
+        "frame_height": 44.0
+      },
+      {
+        "frame_x": 2980.0,
+        "frame_y": 979.0,
+        "frame_width": 60.0,
+        "frame_height": 44.0
+      }
+    ],
+    "durations": [
+      0.075,
+      0.075,
+      0.075,
+      0.075,
+      0.05,
+      0.05,
+      0.05,
+      0.05,
+      0.05,
+      0.05,
+      0.05
+    ]
   },
-  "atk2":{
-    "frames":[
-    {
-      "frame_x" : 2154.0,
-      "frame_y" : 1109.0,
-      "frame_width" : 63.0,
-      "frame_height" : 42.0
-    },
-    {
-      "frame_x" : 2433.0,
-      "frame_y" : 1109.0,
-      "frame_width" : 45.0,
-      "frame_height" : 42.0
-    },
-    {
-      "frame_x" : 2727.0,
-      "frame_y" : 1109.0,
-      "frame_width" : 49.0,
-      "frame_height" : 42.0
-    },
-    {
-      "frame_x" : 2972.0,
-      "frame_y" : 1109.0,
-      "frame_width" : 74.0,
-      "frame_height" : 42.0
-    },
-    {
-      "frame_x" : 3273.0,
-      "frame_y" : 1108.0,
-      "frame_width" : 85.0,
-      "frame_height" : 43.0
-    },
-    {
-      "frame_x" : 3569.0,
-      "frame_y" : 1098.0,
-      "frame_width" : 102.0,
-      "frame_height" : 53.0
-    },
-    {
-      "frame_x" : 3827.0,
-      "frame_y" : 1101.0,
-      "frame_width" : 79.0,
-      "frame_height" : 50.0
-    },
-    {
-      "frame_x" : 4162.0,
-      "frame_y" : 1099.0,
-      "frame_width" : 87.0,
-      "frame_height" : 52.0
-    },
-    {
-      "frame_x" : 4449.0,
-      "frame_y" : 1098.0,
-      "frame_width" : 87.0,
-      "frame_height" : 53.0
-    },
-    {
-      "frame_x" : 4720.0,
-      "frame_y" : 1100.0,
-      "frame_width" : 60.0,
-      "frame_height" : 51.0
-    },
-    {
-      "frame_x" : 4992.0,
-      "frame_y" : 1109.0,
-      "frame_width" : 61.0,
-      "frame_height" : 42.0
-    },
-    {
-      "frame_x" : 5284.0,
-      "frame_y" : 1107.0,
-      "frame_width" : 60.0,
-      "frame_height" : 44.0
-    }],
-    "durations":[0.05, 0.05,0.075,0.075
-    ,0.075, 0.075, 0.075, 0.075, 0.075, 0.075,0.075,0.075]
+  "atk2": {
+    "frames": [
+      
+      {
+        "frame_x": 2154.0,
+        "frame_y": 1109.0,
+        "frame_width": 63.0,
+        "frame_height": 42.0
+      },
+      {
+        "frame_x": 2433.0,
+        "frame_y": 1109.0,
+        "frame_width": 45.0,
+        "frame_height": 42.0
+      },
+      {
+        "frame_x": 2727.0,
+        "frame_y": 1109.0,
+        "frame_width": 49.0,
+        "frame_height": 42.0
+      },
+      {
+        "frame_x": 2972.0,
+        "frame_y": 1109.0,
+        "frame_width": 74.0,
+        "frame_height": 42.0
+      },
+      {
+        "frame_x": 3273.0,
+        "frame_y": 1108.0,
+        "frame_width": 85.0,
+        "frame_height": 43.0
+      },
+      {
+        "frame_x": 3569.0,
+        "frame_y": 1098.0,
+        "frame_width": 102.0,
+        "frame_height": 53.0
+      },
+      {
+        "frame_x": 3827.0,
+        "frame_y": 1101.0,
+        "frame_width": 79.0,
+        "frame_height": 50.0
+      },
+      {
+        "frame_x": 4162.0,
+        "frame_y": 1099.0,
+        "frame_width": 87.0,
+        "frame_height": 52.0
+      },
+      {
+        "frame_x": 4449.0,
+        "frame_y": 1098.0,
+        "frame_width": 87.0,
+        "frame_height": 53.0
+      },
+      {
+        "frame_x": 4720.0,
+        "frame_y": 1100.0,
+        "frame_width": 60.0,
+        "frame_height": 51.0
+      },
+      {
+        "frame_x": 4992.0,
+        "frame_y": 1109.0,
+        "frame_width": 61.0,
+        "frame_height": 42.0
+      },
+      {
+        "frame_x": 5284.0,
+        "frame_y": 1107.0,
+        "frame_width": 60.0,
+        "frame_height": 44.0
+      }
+    ],
+    "durations": [
+      0.05,
+      0.05,
+      0.075,
+      0.075,
+      0.075,
+      0.075,
+      0.075,
+      0.075,
+      0.075,
+      0.075,
+      0.075,
+      0.075
+    ]
+  },
+  "jump": {
+    "frames": [
+      {
+        "frame_x": 107.0,
+        "frame_y": 332.0,
+        "frame_width": 51.0,
+        "frame_height": 51.0
+      },
+      {
+        "frame_x": 395.0,
+        "frame_y": 332.0,
+        "frame_width": 51.0,
+        "frame_height": 51.0
+      },
+      {
+        "frame_x": 683.0,
+        "frame_y": 332.0,
+        "frame_width": 51.0,
+        "frame_height": 51.0
+      }
+    ],
+    "durations": [
+      0.075,
+      0.075,
+      0.075
+    ]
+  },
+  "fall": {
+    "frames": [
+      {
+        "frame_x": 104.0,
+        "frame_y": 446.0,
+        "frame_width": 55.0,
+        "frame_height": 61.0
+      },
+      {
+        "frame_x": 392.0,
+        "frame_y": 446.0,
+        "frame_width": 54.0,
+        "frame_height": 61.0
+      },
+      {
+        "frame_x": 680.0,
+        "frame_y": 446.0,
+        "frame_width": 54.0,
+        "frame_height": 61.0
+      }
+    ],
+    "durations": [
+      0.075,
+      0.075,
+      0.075
+    ]
+  
   },
   "atk3":{
     "frames":[
