@@ -1,8 +1,8 @@
 module FrameDataLoader = struct
   type frame = Sprites.AnimatedSprite.frame
 
-  (*load_frame_data should read the json file from filepath and based on anim
-    name extract the frame data and durations into a tuple*)
+  (**load_frame_data should read the json file from filepath and based on anim
+     name extract the frame data and durations into a tuple*)
   let load_frame_data filepath anim_name =
     let json = Yojson.Basic.from_file filepath in
     let open Yojson.Basic.Util in
@@ -30,4 +30,6 @@ module KnightFrames = struct
   let run = FrameDataLoader.load_frame_data jsonfile "run"
   let atk1 = FrameDataLoader.load_frame_data jsonfile "atk1"
   let atk2 = FrameDataLoader.load_frame_data jsonfile "atk2"
+  let atk3 = FrameDataLoader.load_frame_data jsonfile "atk3"
+  let ult = FrameDataLoader.load_frame_data jsonfile "ult_atk"
 end

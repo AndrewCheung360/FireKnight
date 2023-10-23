@@ -21,3 +21,4 @@
     ```sh 
     make game
     ```
+3. Use A,D for movement, space for jumping, and j,k,l,u for attacks
