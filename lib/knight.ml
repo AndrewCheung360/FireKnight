@@ -35,7 +35,8 @@ module Knight = struct
     { position; velocity; animations; state }
 
   let handle_idle knight =
-    Sprites.AnimatedSprite.switch_animation knight.animations "idle"
+    Sprites.AnimatedSprite.switch_animation knight.animations "idle";
+    knight.velocity <- Vector2.create 0. 0.
 
   let handle_run knight =
     if Vector2.y knight.position = Constants.ground_y then
@@ -134,10 +135,12 @@ module Knight = struct
     else if is_key_pressed Key.K then
       if Vector2.y knight.position = Constants.ground_y then Attack2Right
       else knight.state
-    else if is_key_pressed Key.J then Attack1Right
-    else if is_key_pressed Key.K then Attack2Right
-    else if is_key_pressed Key.L then Attack3Right
-    else if is_key_pressed Key.U then UltimateRight
+    else if is_key_pressed Key.L then
+      if Vector2.y knight.position = Constants.ground_y then Attack3Right
+      else knight.state
+    else if is_key_pressed Key.U then
+      if Vector2.y knight.position = Constants.ground_y then UltimateRight
+      else knight.state
     else if knight.state = Jump && Vector2.y knight.velocity < 0. then Falling
     else if is_key_down Key.Space then
       if Vector2.y knight.position = Constants.ground_y then Jump
