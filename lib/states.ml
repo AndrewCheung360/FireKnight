@@ -1,4 +1,4 @@
-module StateManager = struct
+module KnightStates = struct
   type state =
     | Idle
     | RunRight
@@ -13,5 +13,18 @@ module StateManager = struct
   type t = state
 
   let loop_states = [ Idle; RunRight; RunLeft; Falling ]
+  let is_loop_state state = List.mem state loop_states
+end
+
+module GuardianStates = struct
+  type state =
+    | Idle
+    | Walk
+    | Intro
+    | Punch
+
+  type t = state
+
+  let loop_states = [ Idle; Walk ]
   let is_loop_state state = List.mem state loop_states
 end
