@@ -18,20 +18,29 @@ module FrostGuardian = struct
     in
     let guardian_animations = Hashtbl.create 10 in
     Hashtbl.add guardian_animations "idle" idle;
+    Hashtbl.add guardian_animations "intro" intro;
 
     let animations =
       Sprites.AnimatedSprite.create guardian_spritesheet guardian_animations
         Constants.frost_guardian_scale
     in
-    let position = Vector2.create (-700.) Constants.ground_y in
+    let position = Vector2.create (-900.) Constants.ground_y in
     let velocity = Vector2.create 0. 0. in
-    let state = Idle in
+    let state = Intro in
     { position; velocity; animations; state }
 
   let handle_idle guardian =
     Sprites.AnimatedSprite.switch_animation guardian.animations "idle"
 
-  let handle_state guardian = if guardian.state = Idle then handle_idle guardian
+  let handle_intro guardian =
+    if Sprites.AnimatedSprite.is_animation_finished guardian.animations then
+      guardian.state <- Idle;
+    Sprites.AnimatedSprite.switch_animation guardian.animations "intro"
+
+  let handle_state guardian =
+    match guardian.state with
+    | Intro -> handle_intro guardian
+    | _ -> handle_idle guardian
 
   let update guardian =
     handle_state guardian;

@@ -21,8 +21,8 @@ let rec loop (knight, guardian, bg_texture) =
   FrostGuardian.update guardian;
   begin_drawing ();
   Background.draw_ice_background bg_texture;
-  Knight.draw knight;
   FrostGuardian.draw guardian;
+  Knight.draw knight;
   end_drawing ();
   loop (knight, guardian, bg_texture)
 
