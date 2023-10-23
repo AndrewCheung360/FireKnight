@@ -10,6 +10,6 @@ module Constants = struct
   let upper_boundary = 0.
   let right_boundary = -960.
   let knight_scale = 4.0
-  let grav = -0.18
-  let jump_force = 10.
+  let grav = -0.98
+  let jump_force = 18.
 end
