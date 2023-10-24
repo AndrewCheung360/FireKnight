@@ -2,13 +2,13 @@ module Knight = struct
   open Constants
   open Raylib
   open Frames.KnightFrames
-  open States.StateManager
+  open States.KnightStates
 
   type t = {
     mutable position : Vector2.t;
     mutable velocity : Vector2.t;
     animations : Sprites.AnimatedSprite.t;
-    mutable state : States.StateManager.t;
+    mutable state : States.KnightStates.t;
   }
 
   let create_knight_animation () =
@@ -35,12 +35,7 @@ module Knight = struct
     { position; velocity; animations; state }
 
   let handle_idle knight =
-    if Vector2.y knight.velocity > 0. then
-      Sprites.AnimatedSprite.switch_animation knight.animations "jump"
-    else if Vector2.y knight.position > Constants.ground_y then
-      Sprites.AnimatedSprite.switch_animation knight.animations "fall"
-    else Sprites.AnimatedSprite.switch_animation knight.animations "idle";
-    knight.velocity <- Vector2.create 0. 0.
+    Sprites.AnimatedSprite.switch_animation knight.animations "idle"
 
   let handle_run knight =
     if Vector2.y knight.position = Constants.ground_y then
@@ -81,11 +76,12 @@ module Knight = struct
     else Sprites.AnimatedSprite.switch_animation knight.animations "fall";
 
     if Vector2.y knight.position = Constants.ground_y then
-      knight.velocity <- Vector2.create 0.0 Constants.jump_force;
+      knight.velocity <-
+        Vector2.create (Vector2.x knight.velocity) Constants.jump_force;
 
     let new_position =
       Vector2.add knight.position
-        (Vector2.create 0.0 (Vector2.y knight.velocity))
+        (Vector2.create (Vector2.x knight.velocity) (Vector2.y knight.velocity))
     in
     let new_y = min Constants.upper_boundary (Vector2.y new_position) in
     let new_y = max Constants.ground_y new_y in
@@ -95,10 +91,10 @@ module Knight = struct
     if Vector2.y knight.velocity > 0. then
       Sprites.AnimatedSprite.switch_animation knight.animations "jump"
     else Sprites.AnimatedSprite.switch_animation knight.animations "fall";
-    knight.velocity <- Vector2.create 0. (Vector2.y knight.velocity)
+    knight.velocity <-
+      Vector2.create (Vector2.x knight.velocity) (Vector2.y knight.velocity)
 
   let apply_grav knight =
-    (* Always apply gravity *)
     if Vector2.y knight.velocity > Constants.ground_y then
       knight.velocity <-
         Vector2.create
@@ -128,7 +124,6 @@ module Knight = struct
     else Sprites.AnimatedSprite.switch_animation knight.animations "ult"
 
   let handle_key_input knight =
-    apply_grav knight;
     if
       (not (Sprites.AnimatedSprite.is_animation_finished knight.animations))
       && not (is_loop_state knight.state)
@@ -139,36 +134,34 @@ module Knight = struct
     else if is_key_pressed Key.K then
       if Vector2.y knight.position = Constants.ground_y then Attack2Right
       else knight.state
-    else if is_key_pressed Key.J then Attack1Right
-    else if is_key_pressed Key.K then Attack2Right
-    else if is_key_pressed Key.L then Attack3Right
-    else if is_key_pressed Key.U then UltimateRight
-    else if is_key_down Key.D then RunRight
-    else if is_key_down Key.A then RunLeft
+    else if is_key_pressed Key.L then
+      if Vector2.y knight.position = Constants.ground_y then Attack3Right
+      else knight.state
+    else if is_key_pressed Key.U then
+      if Vector2.y knight.position = Constants.ground_y then UltimateRight
+      else knight.state
     else if is_key_down Key.Space then
       if Vector2.y knight.position = Constants.ground_y then Jump
       else knight.state
-    else if Vector2.y knight.position <= Constants.ground_y then Idle
-    else Falling
+    else if is_key_down Key.D then RunRight
+    else if is_key_down Key.A then RunLeft
+    else if Vector2.y knight.position > Constants.ground_y then Falling
+    else Idle
 
   let handle_input knight =
-    apply_grav knight;
     knight.state <- handle_key_input knight;
-    if knight.state = Attack1Right then handle_attack_1 knight
-    else if knight.state = Attack2Right then handle_attack_2 knight
-    else if knight.state = Jump then begin
-      handle_jump knight
-    end
-    else if knight.state = Falling then handle_fall knight
-    else if knight.state = Attack3Right then handle_attack_3 knight
-    else if knight.state = UltimateRight then handle_ultimate knight
-    else if knight.state = RunRight || knight.state = RunLeft then
-      handle_run knight
-    else begin
-      handle_idle knight
-    end
+    match knight.state with
+    | Attack1Right -> handle_attack_1 knight
+    | Attack2Right -> handle_attack_2 knight
+    | Jump -> handle_jump knight
+    | Falling -> handle_fall knight
+    | Attack3Right -> handle_attack_3 knight
+    | UltimateRight -> handle_ultimate knight
+    | RunRight | RunLeft -> handle_run knight
+    | Idle -> handle_idle knight
 
   let update knight =
+    apply_grav knight;
     handle_input knight;
     Sprites.AnimatedSprite.update_frame_animation knight.animations
 

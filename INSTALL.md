@@ -7,7 +7,7 @@
 2. Install yojson using
 
     ```sh 
-    opam install raylib 
+    opam install yojson 
     ```
 
 ## Usage
