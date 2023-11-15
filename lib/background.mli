@@ -1,5 +1,4 @@
 (** The Background module handles the background rendering. *)
-
 module Background :
   sig
     (** Reference to the ice background texture. *)
