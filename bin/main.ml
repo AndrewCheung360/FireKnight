@@ -3,6 +3,7 @@ open Constants
 open Raylib
 open Knight
 open Frostguardian
+open Statusbar
 open Background
 
 let width = Constants.screen_width
@@ -19,9 +20,10 @@ let setup () =
   ( music,
     Knight.create_knight_animation (),
     FrostGuardian.create_frostguardian_animation (),
+    StatusBar.create_statusbar (),
     Background.initialize () )
 
-let rec loop (music, knight, guardian, bg_texture) =
+let rec loop (music, knight, guardian, statusbar, bg_texture) =
   if window_should_close () then begin
     unload_music_stream music;
     close_audio_device ();
@@ -34,7 +36,8 @@ let rec loop (music, knight, guardian, bg_texture) =
   Background.draw_ice_background bg_texture;
   FrostGuardian.draw guardian;
   Knight.draw knight;
+  StatusBar.draw statusbar;
   end_drawing ();
-  loop (music, knight, guardian, bg_texture)
+  loop (music, knight, guardian, statusbar, bg_texture)
 
 let () = setup () |> loop

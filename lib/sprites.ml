@@ -1,3 +1,46 @@
+module Sprite = struct
+  open Raylib
+
+  type frame = {
+    frame_x : float;
+    frame_y : float;
+    frame_width : float;
+    frame_height : float;
+  }
+
+  type t = {
+    sprite_sheet : Texture.t;
+    frames : (string, frame) Hashtbl.t;
+    scale : float;
+  }
+
+  let create sprite_sheet frames scale = { sprite_sheet; frames; scale }
+  let get_frame sprite name = Hashtbl.find sprite.frames name
+  let get_spritesheet sprite = sprite.sprite_sheet
+
+  let get_src_x sprite name =
+    get_frame sprite name |> fun frame -> frame.frame_x
+
+  let get_src_y sprite name =
+    get_frame sprite name |> fun frame -> frame.frame_y
+
+  let get_src_width sprite name =
+    get_frame sprite name |> fun frame -> frame.frame_width
+
+  let get_src_height sprite name =
+    get_frame sprite name |> fun frame -> frame.frame_height
+
+  let src_rect sprite name =
+    Rectangle.create (get_src_x sprite name) (get_src_y sprite name)
+      (get_src_width sprite name)
+      (get_src_height sprite name)
+
+  let dest_rect sprite name =
+    Rectangle.create 0. 0.
+      (get_src_width sprite name *. sprite.scale)
+      (get_src_height sprite name *. sprite.scale)
+end
+
 module AnimatedSprite = struct
   open Raylib
   open Constants
@@ -50,7 +93,7 @@ module AnimatedSprite = struct
   let current_frame_index anim = anim.current_frame
 
   let current_frame anim =
-    let frames, _ = Hashtbl.find anim.animations anim.current_animation in
+    let frames, _ = get_current_animation anim in
     frames.(anim.current_frame)
 
   let get_src_x anim = current_frame anim |> fun frame -> frame.frame_x
