@@ -11,19 +11,30 @@ let fps = Constants.fps
 
 let setup () =
   init_window width height "Fire Knight";
+  init_audio_device ();
+  let music = load_music_stream "assets/audio/background_music.mp3" in
+
+  play_music_stream music;
   set_target_fps fps;
-  ( Knight.create_knight_animation (),
+  ( music,
+    Knight.create_knight_animation (),
     FrostGuardian.create_frostguardian_animation (),
     Background.initialize () )
 
-let rec loop (knight, guardian, bg_texture) =
-  if window_should_close () then close_window () else Knight.update knight;
+let rec loop (music, knight, guardian, bg_texture) =
+  if window_should_close () then begin
+    unload_music_stream music;
+    close_audio_device ();
+    close_window ()
+  end
+  else update_music_stream music;
+  Knight.update knight;
   FrostGuardian.update guardian;
   begin_drawing ();
   Background.draw_ice_background bg_texture;
   FrostGuardian.draw guardian;
   Knight.draw knight;
   end_drawing ();
-  loop (knight, guardian, bg_texture)
+  loop (music, knight, guardian, bg_texture)
 
 let () = setup () |> loop
