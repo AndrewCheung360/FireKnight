@@ -124,6 +124,7 @@ module Knight = struct
     else Sprites.AnimatedSprite.switch_animation knight.animations "ult"
 
   let handle_key_input knight =
+    apply_grav knight;
     if
       (not (Sprites.AnimatedSprite.is_animation_finished knight.animations))
       && not (is_loop_state knight.state)
@@ -134,19 +135,17 @@ module Knight = struct
     else if is_key_pressed Key.K then
       if Vector2.y knight.position = Constants.ground_y then Attack2Right
       else knight.state
-    else if is_key_pressed Key.L then
-      if Vector2.y knight.position = Constants.ground_y then Attack3Right
-      else knight.state
-    else if is_key_pressed Key.U then
-      if Vector2.y knight.position = Constants.ground_y then UltimateRight
-      else knight.state
+    else if is_key_pressed Key.J then Attack1Right
+    else if is_key_pressed Key.K then Attack2Right
+    else if is_key_pressed Key.L then Attack3Right
+    else if is_key_pressed Key.U then UltimateRight
+    else if is_key_down Key.D then RunRight
+    else if is_key_down Key.A then RunLeft
     else if is_key_down Key.Space then
       if Vector2.y knight.position = Constants.ground_y then Jump
       else knight.state
-    else if is_key_down Key.D then RunRight
-    else if is_key_down Key.A then RunLeft
-    else if Vector2.y knight.position > Constants.ground_y then Falling
-    else Idle
+    else if Vector2.y knight.position <= Constants.ground_y then Idle
+    else Falling
 
   let handle_input knight =
     knight.state <- handle_key_input knight;
