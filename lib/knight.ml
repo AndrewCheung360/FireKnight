@@ -165,6 +165,25 @@ module Knight = struct
     handle_input knight;
     Sprites.AnimatedSprite.update_frame_animation knight.animations
 
+  let hurt_box knight =
+    let frame_height =
+      Rectangle.height (Sprites.AnimatedSprite.dest_rect knight.animations)
+    in
+    let drawing_position =
+      Vector2.create
+        (Vector2.x knight.position)
+        (Vector2.y knight.position +. frame_height)
+    in
+
+    let rectangle_width = 250 in
+    let rectangle_height = 180 in
+    Rectangle.create
+      (-.Vector2.x drawing_position)
+      (-.(Vector2.y drawing_position -. frame_height)
+      -. float_of_int rectangle_height)
+      (float_of_int rectangle_width)
+      (float_of_int rectangle_height)
+
   let draw knight =
     let frame_height =
       Rectangle.height (Sprites.AnimatedSprite.dest_rect knight.animations)
@@ -174,6 +193,17 @@ module Knight = struct
         (Vector2.x knight.position)
         (Vector2.y knight.position +. frame_height)
     in
+
+    let rectangle_width = 250 in
+    let rectangle_height = 180 in
+    let red_color = Color.red in
+
+    draw_rectangle_lines
+      (int_of_float (-.Vector2.x drawing_position))
+      (int_of_float
+         (-.(Vector2.y drawing_position -. frame_height)
+         -. float_of_int rectangle_height))
+      rectangle_width rectangle_height red_color;
 
     draw_texture_pro
       (Sprites.AnimatedSprite.get_spritesheet knight.animations)

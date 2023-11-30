@@ -32,11 +32,30 @@ let rec loop (music, knight, guardian, statusbar, bg_texture) =
   else update_music_stream music;
   Knight.update knight;
   FrostGuardian.update guardian;
+
+  let knight_hurt_box = Knight.hurt_box knight in
+  let guardian_hurt_box = FrostGuardian.hurt_box guardian in
+
+  if check_collision_recs knight_hurt_box guardian_hurt_box then begin
+    let overlap_x =
+      min
+        (Rectangle.x guardian_hurt_box
+        +. Rectangle.width guardian_hurt_box
+        -. Rectangle.x knight_hurt_box)
+        (Rectangle.x knight_hurt_box
+        +. Rectangle.width knight_hurt_box
+        -. Rectangle.x guardian_hurt_box)
+    in
+    let new_knight_x = Vector2.x knight.position +. (overlap_x /. 2.0) in
+    knight.position <- Vector2.create new_knight_x (Vector2.y knight.position)
+  end;
+
   begin_drawing ();
   Background.draw_ice_background bg_texture;
   FrostGuardian.draw guardian;
   Knight.draw knight;
   StatusBar.draw statusbar;
+
   end_drawing ();
   loop (music, knight, guardian, statusbar, bg_texture)
 
