@@ -160,6 +160,15 @@ module Knight = struct
     | RunRight | RunLeft -> handle_run knight
     | Idle -> handle_idle knight
 
+  let get_knight_x knight = Vector2.x knight.position
+  let get_knight_y knight = Vector2.y knight.position
+
+  let get_knight_height knight =
+    Rectangle.height (Sprites.AnimatedSprite.dest_rect knight.animations)
+
+  let get_knight_width knight =
+    Rectangle.width (Sprites.AnimatedSprite.dest_rect knight.animations)
+
   let update knight =
     apply_grav knight;
     handle_input knight;
