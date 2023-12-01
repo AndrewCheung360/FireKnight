@@ -50,6 +50,15 @@ let rec loop (music, knight, guardian, statusbar, bg_texture) =
     knight.position <- Vector2.create new_knight_x (Vector2.y knight.position)
   end;
 
+  if Knight.hit_box knight <> None then begin
+    let hit_box = Option.get (Knight.hit_box knight) in
+    if check_collision_recs hit_box guardian_hurt_box then begin
+      if knight.attack_landed = false then begin
+        knight.attack_landed <- true;
+        print_endline "hit"
+      end
+    end
+  end;
   begin_drawing ();
   Background.draw_ice_background bg_texture;
   FrostGuardian.draw guardian;
