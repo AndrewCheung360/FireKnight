@@ -9,6 +9,8 @@ module FrostGuardian = struct
     mutable velocity : Vector2.t;
     animations : Sprites.AnimatedSprite.t;
     mutable state : States.GuardianStates.t;
+    mutable attack_landed : bool;
+    mutable health : int;
   }
 
   let create_frostguardian_animation () =
@@ -27,7 +29,14 @@ module FrostGuardian = struct
     let position = Vector2.create (-900.) Constants.ground_y in
     let velocity = Vector2.create 0. 0. in
     let state = Intro in
-    { position; velocity; animations; state }
+    {
+      position;
+      velocity;
+      animations;
+      state;
+      attack_landed = false;
+      health = 10000;
+    }
 
   let handle_idle guardian =
     Sprites.AnimatedSprite.switch_animation guardian.animations "idle"
