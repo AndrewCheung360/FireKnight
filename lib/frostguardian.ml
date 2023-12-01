@@ -10,6 +10,8 @@ module FrostGuardian = struct
     animations : Sprites.AnimatedSprite.t;
     mutable state : States.GuardianStates.t;
     mutable idlecounter : int;
+    mutable attack_landed : bool;
+    mutable health : float;
   }
 
   let create_frostguardian_animation () =
@@ -30,7 +32,15 @@ module FrostGuardian = struct
     let velocity = Vector2.create 0. 0. in
     let state = Intro in
     let idlecounter = 0 in
-    { position; velocity; animations; state; idlecounter }
+    {
+      position;
+      velocity;
+      animations;
+      state;
+      idlecounter;
+      attack_landed = false;
+      health = 10000.;
+    }
 
   let handle_idle guardian =
     Sprites.AnimatedSprite.switch_animation guardian.animations "idle";
@@ -63,6 +73,25 @@ module FrostGuardian = struct
     handle_state guardian;
     Sprites.AnimatedSprite.update_frame_animation guardian.animations
 
+  let hurt_box guardian =
+    let frame_height =
+      Rectangle.height (Sprites.AnimatedSprite.dest_rect guardian.animations)
+    in
+    let drawing_position =
+      Vector2.create
+        (Vector2.x guardian.position)
+        (Vector2.y guardian.position +. frame_height)
+    in
+
+    let rectangle_width = 450 in
+    let rectangle_height = 500 in
+    Rectangle.create
+      (-.Vector2.x drawing_position)
+      (-.(Vector2.y drawing_position -. frame_height)
+      -. float_of_int rectangle_height)
+      (float_of_int rectangle_width)
+      (float_of_int rectangle_height)
+
   let draw guardian =
     let frame_height =
       Rectangle.height (Sprites.AnimatedSprite.dest_rect guardian.animations)
@@ -72,6 +101,17 @@ module FrostGuardian = struct
         (Vector2.x guardian.position)
         (Vector2.y guardian.position +. frame_height)
     in
+
+    let rectangle_width = 450 in
+    let rectangle_height = 500 in
+    let red_color = Color.red in
+
+    draw_rectangle_lines
+      (int_of_float (-.Vector2.x drawing_position))
+      (int_of_float
+         (-.(Vector2.y drawing_position -. frame_height)
+         -. float_of_int rectangle_height))
+      rectangle_width rectangle_height red_color;
 
     draw_texture_pro
       (Sprites.AnimatedSprite.get_spritesheet guardian.animations)
