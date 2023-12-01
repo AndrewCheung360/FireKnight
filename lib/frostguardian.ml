@@ -55,8 +55,21 @@ module FrostGuardian = struct
 
   let handle_punch guardian =
     Sprites.AnimatedSprite.switch_animation guardian.animations "punch";
-    if Sprites.AnimatedSprite.is_animation_finished guardian.animations then
-      guardian.state <- Idle
+    if Sprites.AnimatedSprite.is_animation_finished guardian.animations then begin
+      guardian.state <- Idle;
+      let position = Vector2.create (-900.) Constants.ground_y in
+      guardian.position <- position
+    end
+    else
+      let frame_index =
+        Sprites.AnimatedSprite.current_frame_index guardian.animations
+      in
+      if frame_index = 6 || frame_index = 7 || frame_index = 8 then
+        let position = Vector2.create (-600.) Constants.ground_y in
+        guardian.position <- position
+      else
+        let position = Vector2.create (-900.) Constants.ground_y in
+        guardian.position <- position
 
   let handle_intro guardian =
     if Sprites.AnimatedSprite.is_animation_finished guardian.animations then
