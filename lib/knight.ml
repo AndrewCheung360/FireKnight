@@ -10,7 +10,7 @@ module Knight = struct
     animations : Sprites.AnimatedSprite.t;
     mutable state : States.KnightStates.t;
     mutable attack_landed : bool;
-    mutable health : int;
+    mutable health : float;
   }
 
   let create_knight_animation () =
@@ -40,7 +40,7 @@ module Knight = struct
       animations;
       state;
       attack_landed = false;
-      health = 1000;
+      health = 1000.;
     }
 
   let handle_idle knight =
@@ -235,6 +235,14 @@ module Knight = struct
              (int_of_float (get_frame_height knight))
              knight)
     | _ -> None
+
+  let apply_damage knight (guardian : Frostguardian.FrostGuardian.t) =
+    match knight.state with
+    | Attack1Right -> guardian.health <- guardian.health -. 25.
+    | Attack2Right -> guardian.health <- guardian.health -. 50.
+    | Attack3Right -> guardian.health <- guardian.health -. 100.
+    | UltimateRight -> guardian.health <- guardian.health -. 200.
+    | _ -> ()
 
   let draw knight =
     let frame_height =

@@ -10,7 +10,7 @@ module FrostGuardian = struct
     animations : Sprites.AnimatedSprite.t;
     mutable state : States.GuardianStates.t;
     mutable attack_landed : bool;
-    mutable health : int;
+    mutable health : float;
   }
 
   let create_frostguardian_animation () =
@@ -35,7 +35,7 @@ module FrostGuardian = struct
       animations;
       state;
       attack_landed = false;
-      health = 10000;
+      health = 10000.;
     }
 
   let handle_idle guardian =
