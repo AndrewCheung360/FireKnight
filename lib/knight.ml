@@ -146,12 +146,12 @@ module Knight = struct
     else if is_key_pressed Key.K then
       if Vector2.y knight.position = Constants.ground_y then Attack2Right
       else knight.state
-    else if is_key_pressed Key.L then
-      if Vector2.y knight.position = Constants.ground_y then Attack3Right
-      else knight.state
-    else if is_key_pressed Key.U then
-      if Vector2.y knight.position = Constants.ground_y then UltimateRight
-      else knight.state
+    else if is_key_pressed Key.J then Attack1Right
+    else if is_key_pressed Key.K then Attack2Right
+    else if is_key_pressed Key.L then Attack3Right
+    else if is_key_pressed Key.U then UltimateRight
+    else if is_key_down Key.D then RunRight
+    else if is_key_down Key.A then RunLeft
     else if is_key_down Key.Space then
       if Vector2.y knight.position = Constants.ground_y then Jump
       else knight.state

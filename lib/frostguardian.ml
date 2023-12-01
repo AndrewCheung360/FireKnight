@@ -9,6 +9,7 @@ module FrostGuardian = struct
     mutable velocity : Vector2.t;
     animations : Sprites.AnimatedSprite.t;
     mutable state : States.GuardianStates.t;
+    mutable idlecounter : int;
     mutable attack_landed : bool;
     mutable health : float;
   }
@@ -21,6 +22,7 @@ module FrostGuardian = struct
     let guardian_animations = Hashtbl.create 10 in
     Hashtbl.add guardian_animations "idle" idle;
     Hashtbl.add guardian_animations "intro" intro;
+    Hashtbl.add guardian_animations "punch" punch;
 
     let animations =
       Sprites.AnimatedSprite.create guardian_spritesheet guardian_animations
@@ -29,17 +31,32 @@ module FrostGuardian = struct
     let position = Vector2.create (-900.) Constants.ground_y in
     let velocity = Vector2.create 0. 0. in
     let state = Intro in
+    let idlecounter = 0 in
     {
       position;
       velocity;
       animations;
       state;
+      idlecounter;
       attack_landed = false;
       health = 10000.;
     }
 
   let handle_idle guardian =
-    Sprites.AnimatedSprite.switch_animation guardian.animations "idle"
+    Sprites.AnimatedSprite.switch_animation guardian.animations "idle";
+    guardian.idlecounter <- guardian.idlecounter + 1;
+    if
+      Sprites.AnimatedSprite.is_animation_finished guardian.animations
+      && guardian.idlecounter >= 210
+    then begin
+      guardian.idlecounter <- 0;
+      guardian.state <- Punch
+    end
+
+  let handle_punch guardian =
+    Sprites.AnimatedSprite.switch_animation guardian.animations "punch";
+    if Sprites.AnimatedSprite.is_animation_finished guardian.animations then
+      guardian.state <- Idle
 
   let handle_intro guardian =
     if Sprites.AnimatedSprite.is_animation_finished guardian.animations then
@@ -49,6 +66,7 @@ module FrostGuardian = struct
   let handle_state guardian =
     match guardian.state with
     | Intro -> handle_intro guardian
+    | Punch -> handle_punch guardian
     | _ -> handle_idle guardian
 
   let update guardian =
