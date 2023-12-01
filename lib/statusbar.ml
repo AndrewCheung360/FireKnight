@@ -30,18 +30,34 @@ module StatusBar = struct
       frames = Sprite.create hud_spritesheet status_bar_frames 5.0;
     }
 
-  let draw_portrait statusbar =
-    let portrait_frame_height =
-      Rectangle.height (Sprite.dest_rect statusbar.frames "portrait_frame")
-    in
-    let p_frame_drawing_position =
-      Vector2.create 0. (-120. +. portrait_frame_height)
-    in
+  let draw_helper statusbar name x y =
+    let height = Rectangle.height (Sprite.dest_rect statusbar.frames name) in
+    let drawing_position = Vector2.create x (y +. height) in
 
     draw_texture_pro statusbar.sprite_sheet
-      (Sprite.src_rect statusbar.frames "portrait_frame")
-      (Sprite.dest_rect statusbar.frames "portrait_frame")
-      p_frame_drawing_position 0. Color.raywhite;
+      (Sprite.src_rect statusbar.frames name)
+      (Sprite.dest_rect statusbar.frames name)
+      drawing_position 0. Color.raywhite
+
+  let draw_boss_healthbar statusbar hp =
+    let drawing_position = Vector2.create (-400.) (-100. +. 56.) in
+    draw_texture_pro statusbar.sprite_sheet
+      (Rectangle.create (-135.) 20. (-52.) 7.)
+      (Rectangle.create 0. 0. (52. *. 28. *. hp) (7. *. 8.))
+      drawing_position 0. Color.raywhite
+
+  let draw_red_healthbar statusbar hp =
+    let height =
+      Rectangle.height (Sprite.dest_rect statusbar.frames "red_healthbar")
+    in
+    let drawing_position = Vector2.create (-135.5) (-26. +. height) in
+    draw_texture_pro statusbar.sprite_sheet
+      (Sprite.src_rect statusbar.frames "red_healthbar")
+      (Rectangle.create 0. 0. (49. *. 5. *. hp) (3. *. 5.))
+      drawing_position 0. Color.raywhite
+
+  let draw_portrait statusbar =
+    draw_helper statusbar "portrait_frame" 0. (-120.);
     let portrait_src_rect = Rectangle.create 0. 0. 64. 64. in
     let portrait_dest_rect =
       Rectangle.create 0. 0. (64. *. 1.75) (64. *. 1.75)
@@ -54,65 +70,13 @@ module StatusBar = struct
       portrait_drawing_position 0. Color.raywhite
 
   let draw_manabar statusbar =
-    let manabar_height =
-      Rectangle.height (Sprite.dest_rect statusbar.frames "manabar")
-    in
-    let manabar_drawing_position =
-      Vector2.create (-130.) (-65. +. manabar_height)
-    in
-
-    draw_texture_pro statusbar.sprite_sheet
-      (Sprite.src_rect statusbar.frames "manabar")
-      (Sprite.dest_rect statusbar.frames "manabar")
-      manabar_drawing_position 0. Color.raywhite;
-    let blue_manabar_height =
-      Rectangle.height (Sprite.dest_rect statusbar.frames "blue_manabar")
-    in
-    let blue_manabar_drawing_position =
-      Vector2.create (-135.5) (-56. +. blue_manabar_height)
-    in
-
-    draw_texture_pro statusbar.sprite_sheet
-      (Sprite.src_rect statusbar.frames "blue_manabar")
-      (Sprite.dest_rect statusbar.frames "blue_manabar")
-      blue_manabar_drawing_position 0. Color.raywhite
+    draw_helper statusbar "manabar" (-130.) (-65.);
+    draw_helper statusbar "blue_manabar" (-135.5) (-56.)
 
   let draw_healthbar statusbar =
-    let healthbar_height =
-      Rectangle.height (Sprite.dest_rect statusbar.frames "healthbar")
-    in
-    let healthbar_drawing_position =
-      Vector2.create (-130.) (-35. +. healthbar_height)
-    in
+    draw_helper statusbar "healthbar" (-130.) (-35.)
 
-    draw_texture_pro statusbar.sprite_sheet
-      (Sprite.src_rect statusbar.frames "healthbar")
-      (Sprite.dest_rect statusbar.frames "healthbar")
-      healthbar_drawing_position 0. Color.raywhite;
-    let red_healthbar_height =
-      Rectangle.height (Sprite.dest_rect statusbar.frames "red_healthbar")
-    in
-    let red_healthbar_drawing_position =
-      Vector2.create (-135.5) (-26. +. red_healthbar_height)
-    in
-
-    draw_texture_pro statusbar.sprite_sheet
-      (Sprite.src_rect statusbar.frames "red_healthbar")
-      (Sprite.dest_rect statusbar.frames "red_healthbar")
-      red_healthbar_drawing_position 0. Color.raywhite
-
-  let draw_goldbar statusbar =
-    let goldbar_height =
-      Rectangle.height (Sprite.dest_rect statusbar.frames "gold_bar")
-    in
-    let goldbar_drawing_position =
-      Vector2.create (-130.) (-120. +. goldbar_height)
-    in
-
-    draw_texture_pro statusbar.sprite_sheet
-      (Sprite.src_rect statusbar.frames "gold_bar")
-      (Sprite.dest_rect statusbar.frames "gold_bar")
-      goldbar_drawing_position 0. Color.raywhite
+  let draw_goldbar statusbar = draw_helper statusbar "gold_bar" (-130.) (-120.)
 
   let draw statusbar =
     draw_portrait statusbar;
