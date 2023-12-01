@@ -84,7 +84,9 @@ module FrostGuardian = struct
 
   let update guardian =
     handle_state guardian;
-    Sprites.AnimatedSprite.update_frame_animation guardian.animations
+    Sprites.AnimatedSprite.update_frame_animation guardian.animations;
+    if Sprites.AnimatedSprite.is_animation_finished guardian.animations then
+      guardian.attack_landed <- false
 
   let hurt_box guardian =
     let frame_height =
@@ -104,6 +106,24 @@ module FrostGuardian = struct
       -. float_of_int rectangle_height)
       (float_of_int rectangle_width)
       (float_of_int rectangle_height)
+
+  let hit_box_helper x y w h guardian =
+    let frame_height =
+      Rectangle.height (Sprites.AnimatedSprite.dest_rect guardian.animations)
+    in
+    let guardian_pos_x = Vector2.x guardian.position in
+    let guardian_pos_y = Vector2.y guardian.position +. frame_height in
+
+    Rectangle.create (-.guardian_pos_x +. x) (-.guardian_pos_y +. y)
+      (float_of_int w) (float_of_int h)
+
+  let hit_box guardian =
+    match
+      ( guardian.state,
+        Sprites.AnimatedSprite.current_frame_index guardian.animations )
+    with
+    | Punch, 6 -> Some (hit_box_helper 0. 88. 400 300 guardian)
+    | _ -> None
 
   let draw guardian =
     let frame_height =
@@ -125,7 +145,8 @@ module FrostGuardian = struct
          (-.(Vector2.y drawing_position -. frame_height)
          -. float_of_int rectangle_height))
       rectangle_width rectangle_height red_color;
-
+    if hit_box guardian <> None then
+      draw_rectangle_lines_ex (Option.get (hit_box guardian)) 2. Color.green;
     draw_texture_pro
       (Sprites.AnimatedSprite.get_spritesheet guardian.animations)
       (Sprites.AnimatedSprite.src_rect guardian.animations)

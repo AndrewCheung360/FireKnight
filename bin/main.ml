@@ -59,6 +59,15 @@ let rec loop (music, knight, guardian, statusbar, bg_texture) =
       end
     end
   end;
+  if FrostGuardian.hit_box guardian <> None then begin
+    let hit_box = Option.get (FrostGuardian.hit_box guardian) in
+    if check_collision_recs hit_box knight_hurt_box then begin
+      if guardian.attack_landed = false then begin
+        guardian.attack_landed <- true;
+        knight.health <- knight.health -. 200.
+      end
+    end
+  end;
   begin_drawing ();
   Background.draw_ice_background bg_texture;
   FrostGuardian.draw guardian;
