@@ -64,6 +64,7 @@ let rec loop (music, knight, guardian, statusbar, bg_texture) =
     if check_collision_recs hit_box knight_hurt_box then begin
       if guardian.attack_landed = false then begin
         guardian.attack_landed <- true;
+        knight.hurt <- true;
         knight.health <- knight.health -. 200.
       end
     end
@@ -73,6 +74,7 @@ let rec loop (music, knight, guardian, statusbar, bg_texture) =
   FrostGuardian.draw guardian;
   Knight.draw knight;
   StatusBar.draw statusbar;
+  StatusBar.draw_blue_manabar statusbar (knight.mana /. 1000.);
   StatusBar.draw_red_healthbar statusbar (knight.health /. 1000.);
   StatusBar.draw_boss_healthbar statusbar (guardian.health /. 10000.);
   end_drawing ();

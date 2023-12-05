@@ -10,7 +10,9 @@ module Knight = struct
     animations : Sprites.AnimatedSprite.t;
     mutable state : States.KnightStates.t;
     mutable attack_landed : bool;
+    mutable hurt : bool;
     mutable health : float;
+    mutable mana : float;
   }
 
   let create_knight_animation () =
@@ -26,6 +28,7 @@ module Knight = struct
     Hashtbl.add knight_animations "fall" fall;
     Hashtbl.add knight_animations "attack_3" atk3;
     Hashtbl.add knight_animations "ult" ult;
+    Hashtbl.add knight_animations "hurt" hurt;
 
     let animations =
       Sprites.AnimatedSprite.create knight_spritesheet knight_animations
@@ -40,7 +43,9 @@ module Knight = struct
       animations;
       state;
       attack_landed = false;
+      hurt = false;
       health = 1000.;
+      mana = 1000.;
     }
 
   let handle_idle knight =
@@ -132,24 +137,47 @@ module Knight = struct
     end
     else Sprites.AnimatedSprite.switch_animation knight.animations "ult"
 
+  let handle_hurt knight =
+    if Sprites.AnimatedSprite.is_animation_finished knight.animations then begin
+      knight.state <- Idle;
+      Sprites.AnimatedSprite.switch_animation knight.animations "idle"
+    end
+    else if knight.hurt then (
+      let xpos = Vector2.x knight.position +. 15. in
+      let ypos = Vector2.y knight.position in
+      knight.position <- Vector2.create xpos ypos;
+      Sprites.AnimatedSprite.switch_animation knight.animations "hurt")
+
   let handle_key_input knight =
     let donothing =
       if Vector2.y knight.position > Constants.ground_y then Falling else Idle
     in
-    if
+    if knight.hurt then Hurt
+    else if
       (not (Sprites.AnimatedSprite.is_animation_finished knight.animations))
       && not (is_loop_state knight.state)
     then knight.state
     else if is_key_pressed Key.J then
       if Vector2.y knight.position = Constants.ground_y then Attack1Right
       else knight.state
-    else if is_key_pressed Key.K then
-      if Vector2.y knight.position = Constants.ground_y then Attack2Right
+    else if is_key_pressed Key.K && knight.mana >= 60. then
+      if Vector2.y knight.position = Constants.ground_y then begin
+        knight.mana <- knight.mana -. 60.;
+        Attack2Right
+      end
       else knight.state
-    else if is_key_pressed Key.J then Attack1Right
-    else if is_key_pressed Key.K then Attack2Right
-    else if is_key_pressed Key.L then Attack3Right
-    else if is_key_pressed Key.U then UltimateRight
+    else if is_key_pressed Key.L && knight.mana >= 200. then
+      if Vector2.y knight.position = Constants.ground_y then begin
+        knight.mana <- knight.mana -. 200.;
+        Attack3Right
+      end
+      else knight.state
+    else if is_key_pressed Key.U && knight.mana >= 600. then
+      if Vector2.y knight.position = Constants.ground_y then begin
+        knight.mana <- knight.mana -. 600.;
+        UltimateRight
+      end
+      else knight.state
     else if is_key_down Key.D && is_key_pressed Key.Space then
       if Vector2.y knight.position = Constants.ground_y then Jump
       else knight.state
@@ -169,6 +197,7 @@ module Knight = struct
   let handle_input knight =
     knight.state <- handle_key_input knight;
     match knight.state with
+    | Hurt -> handle_hurt knight
     | Attack1Right -> handle_attack_1 knight
     | Attack2Right -> handle_attack_2 knight
     | Jump -> handle_jump knight
@@ -183,8 +212,11 @@ module Knight = struct
     handle_input knight;
 
     Sprites.AnimatedSprite.update_frame_animation knight.animations;
-    if Sprites.AnimatedSprite.is_animation_finished knight.animations then
-      knight.attack_landed <- false
+    if Sprites.AnimatedSprite.is_animation_finished knight.animations then begin
+      knight.attack_landed <- false;
+      knight.hurt <- false
+    end;
+    if knight.mana < 1000. then knight.mana <- knight.mana +. 1.
 
   let get_frame_height knight =
     Rectangle.height (Sprites.AnimatedSprite.dest_rect knight.animations)
@@ -243,11 +275,14 @@ module Knight = struct
     | _ -> None
 
   let apply_damage knight (guardian : Frostguardian.FrostGuardian.t) =
+    let dec_health n = guardian.health <- guardian.health -. n in
     match knight.state with
-    | Attack1Right -> guardian.health <- guardian.health -. 25.
-    | Attack2Right -> guardian.health <- guardian.health -. 50.
-    | Attack3Right -> guardian.health <- guardian.health -. 100.
-    | UltimateRight -> guardian.health <- guardian.health -. 200.
+    | Attack1Right -> dec_health 25.
+    | Attack2Right -> dec_health 50.
+    | Attack3Right -> dec_health 100.
+    | UltimateRight ->
+        dec_health 200.;
+        guardian.hurt <- true
     | _ -> ()
 
   let draw knight =
