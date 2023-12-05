@@ -56,6 +56,16 @@ module StatusBar = struct
       (Rectangle.create 0. 0. (49. *. 5. *. hp) (3. *. 5.))
       drawing_position 0. Color.raywhite
 
+  let draw_blue_manabar statusbar mana =
+    let height =
+      Rectangle.height (Sprite.dest_rect statusbar.frames "blue_manabar")
+    in
+    let drawing_position = Vector2.create (-135.5) (-56. +. height) in
+    draw_texture_pro statusbar.sprite_sheet
+      (Sprite.src_rect statusbar.frames "blue_manabar")
+      (Rectangle.create 0. 0. (42. *. 5. *. mana) (3. *. 5.))
+      drawing_position 0. Color.raywhite
+
   let draw_portrait statusbar =
     draw_helper statusbar "portrait_frame" 0. (-120.);
     let portrait_src_rect = Rectangle.create 0. 0. 64. 64. in
@@ -69,9 +79,7 @@ module StatusBar = struct
     draw_texture_pro statusbar.portrait portrait_src_rect portrait_dest_rect
       portrait_drawing_position 0. Color.raywhite
 
-  let draw_manabar statusbar =
-    draw_helper statusbar "manabar" (-130.) (-65.);
-    draw_helper statusbar "blue_manabar" (-135.5) (-56.)
+  let draw_manabar statusbar = draw_helper statusbar "manabar" (-130.) (-65.)
 
   let draw_healthbar statusbar =
     draw_helper statusbar "healthbar" (-130.) (-35.)

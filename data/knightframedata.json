@@ -527,8 +527,56 @@
       "frame_width" : 60.0,
       "frame_height" : 44.0
     }],
-    "durations":[0.075, 0.075,0.075,0.075
-    ,0.075, 0.075, 0.075, 0.075, 0.075, 0.075, 0.075,0.1,0.1
+    "durations":[0.1, 0.1,0.1,0.1
+    ,0.1, 0.1, 0.075, 0.075, 0.075, 0.075, 0.075,0.1,0.1
     ,0.1, 0.1, 0.1, 0.1, 0.1]
+  },
+  "hurt": {
+    "frames": [
+      {
+        "frame_x": 98.00,
+        "frame_y": 1621.00,
+        "frame_width": 64.00,
+        "frame_height": 42.00
+      },
+      {
+        "frame_x": 384.00,
+        "frame_y": 1620.00,
+        "frame_width": 65.00,
+        "frame_height": 43.00
+      },
+      {
+        "frame_x": 671.00,
+        "frame_y": 1617.00,
+        "frame_width": 69.00,
+        "frame_height": 46.00
+      },
+      {
+        "frame_x": 959.00,
+        "frame_y": 1620.00,
+        "frame_width": 66.00,
+        "frame_height": 43.00
+      },
+      {
+        "frame_x": 1248.00,
+        "frame_y": 1620.00,
+        "frame_width": 65.00,
+        "frame_height": 43.00
+      },
+      {
+        "frame_x": 1540.00,
+        "frame_y": 1619.00,
+        "frame_width": 60.00,
+        "frame_height": 44.00
+      }
+    ],
+    "durations": [
+      0.075,
+      0.075,
+      0.075,
+      0.075,
+      0.075,
+      0.075
+    ]
   }
 }

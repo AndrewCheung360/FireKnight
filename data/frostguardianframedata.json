@@ -165,9 +165,59 @@
       0.15
     ]
   },
-  "walk": {
-    "frames": [],
-    "durations": []
+  "hurt": {
+    "frames": [
+      {
+        "frame_x": 57.0,
+        "frame_y": 403.0,
+        "frame_width": 79.0,
+        "frame_height": 91.0
+      },
+      {
+        "frame_x": 252.0,
+        "frame_y": 402.0,
+        "frame_width": 76.0,
+        "frame_height": 92.0
+      },
+      {
+        "frame_x": 448.0,
+        "frame_y": 402.0,
+        "frame_width": 76.0,
+        "frame_height": 92.0
+      },
+      {
+        "frame_x": 641.0,
+        "frame_y": 402.0,
+        "frame_width": 76.0,
+        "frame_height": 92.0
+      },
+      {
+        "frame_x": 832.0,
+        "frame_y": 402.0,
+        "frame_width": 76.0,
+        "frame_height": 92.0
+      },
+      {
+        "frame_x": 1020.0,
+        "frame_y": 402.0,
+        "frame_width": 76.0,
+        "frame_height": 92.0
+      },
+      {
+        "frame_x": 1208.0,
+        "frame_y": 402.0,
+        "frame_width": 79.0,
+        "frame_height": 92.0
+      }
+    ],
+    "durations": [
+      0.075,
+      0.075,
+      0.075,
+      0.075,
+      0.075,
+      0.075
+    ]
   },
   "punch": {
     "frames": [
