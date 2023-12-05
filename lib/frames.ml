@@ -56,6 +56,13 @@ module FrostGuardianFrames = struct
   let hurt = FrameDataLoader.load_anim_frame_data jsonfile "hurt"
   let punch = FrameDataLoader.load_anim_frame_data jsonfile "punch"
   let intro = FrameDataLoader.load_anim_frame_data jsonfile "intro"
+
+  let death =
+    let reverse_array arr =
+      Array.init (Array.length arr) (fun i -> arr.(Array.length arr - 1 - i))
+    in
+    let f, d = intro in
+    (reverse_array f, reverse_array d)
 end
 
 module HudFrames = struct
