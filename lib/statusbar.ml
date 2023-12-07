@@ -22,6 +22,7 @@ module StatusBar = struct
     Hashtbl.add status_bar_frames "blue_manabar" HudFrames.blue_manabar;
     Hashtbl.add status_bar_frames "portrait_frame" HudFrames.portrait_frame;
     Hashtbl.add status_bar_frames "gold_bar" HudFrames.gold_bar;
+    Hashtbl.add status_bar_frames "menu" HudFrames.menu;
     {
       sprite_sheet = hud_spritesheet;
       health = 100;
@@ -38,6 +39,18 @@ module StatusBar = struct
       (Sprite.src_rect statusbar.frames name)
       (Sprite.dest_rect statusbar.frames name)
       drawing_position 0. Color.raywhite
+
+  let draw_restart_screen statusbar score =
+    let height = 44. *. 4. in
+    let drawing_position = Vector2.create (-400.) (-300. +. height) in
+    draw_texture_pro statusbar.sprite_sheet
+      (Sprite.src_rect statusbar.frames "menu")
+      (Rectangle.create 0. 0. (44. *. 18.) (height *. 2.5))
+      drawing_position 0. Color.raywhite;
+    let score_string = "SCORE: " ^ string_of_int score in
+    let restart_string = "PRESS R TO RESTART" in
+    draw_text score_string 500 275 50 Color.raywhite;
+    draw_text restart_string 500 375 50 Color.raywhite
 
   let draw_boss_healthbar statusbar hp =
     let drawing_position = Vector2.create (-400.) (-100. +. 56.) in

@@ -10,6 +10,7 @@ module KnightStates = struct
     | Attack3Right
     | UltimateRight
     | Hurt
+    | Death
 
   type t = state
 

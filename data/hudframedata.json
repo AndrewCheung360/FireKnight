@@ -34,6 +34,12 @@
     "frame_y": 48.0,
     "frame_width": 38.0,
     "frame_height": 12.0
+  },
+  "menu":{
+    "frame_x": 2.0,
+    "frame_y": 34.0,
+    "frame_width": 44.0,
+    "frame_height": 44.0
   }
 
 }

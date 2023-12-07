@@ -578,5 +578,102 @@
       0.075,
       0.075
     ]
+  },
+  "death": {
+    "frames": [
+      {
+        "frame_x": 100.00,
+        "frame_y": 1747.00,
+        "frame_width": 60.00,
+        "frame_height": 44.00
+      },
+      {
+        "frame_x": 404.00,
+        "frame_y": 1747.00,
+        "frame_width": 44.00,
+        "frame_height": 44.00
+      },
+      {
+        "frame_x": 709.00,
+        "frame_y": 1747.00,
+        "frame_width": 24.00,
+        "frame_height": 44.00
+      },
+      {
+        "frame_x": 997.00,
+        "frame_y": 1751.00,
+        "frame_width": 35.00,
+        "frame_height": 40.00
+      },
+      {
+        "frame_x": 1285.00,
+        "frame_y": 1751.00,
+        "frame_width": 34.00,
+        "frame_height": 40.00
+      },
+      {
+        "frame_x": 1573.00,
+        "frame_y": 1751.00,
+        "frame_width": 34.00,
+        "frame_height": 40.00
+      },
+      {
+        "frame_x": 1861.00,
+        "frame_y": 1751.00,
+        "frame_width": 34.00,
+        "frame_height": 40.00
+      },
+      {
+        "frame_x": 2149.00,
+        "frame_y": 1751.00,
+        "frame_width": 44.00,
+        "frame_height": 40.00
+      },
+      {
+        "frame_x": 2437.00,
+        "frame_y": 1751.00,
+        "frame_width": 54.00,
+        "frame_height": 40.00
+      },
+      {
+        "frame_x": 2725.00,
+        "frame_y": 1751.00,
+        "frame_width": 63.00,
+        "frame_height": 40.00
+      },
+      {
+        "frame_x": 3013.00,
+        "frame_y": 1751.00,
+        "frame_width": 63.00,
+        "frame_height": 40.00
+      },
+      {
+        "frame_x": 3301.00,
+        "frame_y": 1751.00,
+        "frame_width": 63.00,
+        "frame_height": 40.00
+      },
+      {
+        "frame_x": 3589.00,
+        "frame_y": 1751.00,
+        "frame_width": 63.00,
+        "frame_height": 40.00
+      }
+    ],
+    "durations": [
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1,
+      0.1
+    ]
   }
 }

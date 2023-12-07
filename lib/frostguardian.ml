@@ -83,6 +83,9 @@ module FrostGuardian = struct
   let handle_death guardian =
     Sprites.AnimatedSprite.switch_animation guardian.animations "death"
 
+  let is_animation_finished guardian =
+    Sprites.AnimatedSprite.is_animation_finished guardian.animations
+
   let handle_hurt guardian =
     if Sprites.AnimatedSprite.is_animation_finished guardian.animations then begin
       guardian.state <- Idle;

@@ -30,6 +30,7 @@ module Knight = struct
     Hashtbl.add knight_animations "attack_3" atk3;
     Hashtbl.add knight_animations "ult" ult;
     Hashtbl.add knight_animations "hurt" hurt;
+    Hashtbl.add knight_animations "death" death;
 
     let animations =
       Sprites.AnimatedSprite.create knight_spritesheet knight_animations
@@ -150,6 +151,9 @@ module Knight = struct
       knight.position <- Vector2.create xpos ypos;
       Sprites.AnimatedSprite.switch_animation knight.animations "hurt")
 
+  let handle_death knight =
+    Sprites.AnimatedSprite.switch_animation knight.animations "death"
+
   let handle_key_input knight =
     let donothing =
       if Vector2.y knight.position > Constants.ground_y then Falling else Idle
@@ -199,6 +203,7 @@ module Knight = struct
   let handle_input knight =
     knight.state <- handle_key_input knight;
     match knight.state with
+    | Death -> handle_death knight
     | Hurt -> handle_hurt knight
     | Attack1Right -> handle_attack_1 knight
     | Attack2Right -> handle_attack_2 knight
@@ -210,6 +215,7 @@ module Knight = struct
     | _ -> handle_idle knight
 
   let update knight =
+    if knight.health <= 0. then knight.state <- Death;
     apply_grav knight;
     handle_input knight;
 
@@ -225,6 +231,9 @@ module Knight = struct
 
   let get_frame_width knight =
     Rectangle.width (Sprites.AnimatedSprite.dest_rect knight.animations)
+
+  let is_animation_finished knight =
+    Sprites.AnimatedSprite.is_animation_finished knight.animations
 
   let hurt_box knight =
     let frame_height =

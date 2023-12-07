@@ -46,6 +46,7 @@ module KnightFrames = struct
   let atk3 = FrameDataLoader.load_anim_frame_data jsonfile "atk3"
   let ult = FrameDataLoader.load_anim_frame_data jsonfile "ult_atk"
   let hurt = FrameDataLoader.load_anim_frame_data jsonfile "hurt"
+  let death = FrameDataLoader.load_anim_frame_data jsonfile "death"
 end
 
 module FrostGuardianFrames = struct
@@ -75,4 +76,5 @@ module HudFrames = struct
   let blue_manabar = FrameDataLoader.load_frame_data jsonfile "blue_manabar"
   let portrait_frame = FrameDataLoader.load_frame_data jsonfile "portrait_frame"
   let gold_bar = FrameDataLoader.load_frame_data jsonfile "gold_bar"
+  let menu = FrameDataLoader.load_frame_data jsonfile "menu"
 end
