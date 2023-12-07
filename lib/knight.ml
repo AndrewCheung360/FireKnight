@@ -13,6 +13,7 @@ module Knight = struct
     mutable hurt : bool;
     mutable health : float;
     mutable mana : float;
+    mutable gold : int;
   }
 
   let create_knight_animation () =
@@ -46,6 +47,7 @@ module Knight = struct
       hurt = false;
       health = 1000.;
       mana = 1000.;
+      gold = 0;
     }
 
   let handle_idle knight =
@@ -276,11 +278,19 @@ module Knight = struct
 
   let apply_damage knight (guardian : Frostguardian.FrostGuardian.t) =
     let dec_health n = guardian.health <- guardian.health -. n in
+    let inc_gold n = knight.gold <- knight.gold + n in
     match knight.state with
-    | Attack1Right -> dec_health 25.
-    | Attack2Right -> dec_health 50.
-    | Attack3Right -> dec_health 100.
+    | Attack1Right ->
+        inc_gold 10;
+        dec_health 25.
+    | Attack2Right ->
+        inc_gold 20;
+        dec_health 50.
+    | Attack3Right ->
+        inc_gold 40;
+        dec_health 100.
     | UltimateRight ->
+        inc_gold 100;
         dec_health 200.;
         guardian.hurt <- true
     | _ -> ()

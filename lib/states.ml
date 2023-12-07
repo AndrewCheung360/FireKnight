@@ -23,6 +23,7 @@ module GuardianStates = struct
     | Hurt
     | Intro
     | Punch
+    | Death
 
   type t = state
 

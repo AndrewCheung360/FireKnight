@@ -77,6 +77,7 @@ let rec loop (music, knight, guardian, statusbar, bg_texture) =
   StatusBar.draw_blue_manabar statusbar (knight.mana /. 1000.);
   StatusBar.draw_red_healthbar statusbar (knight.health /. 1000.);
   StatusBar.draw_boss_healthbar statusbar (guardian.health /. 10000.);
+  StatusBar.draw_gold knight.gold;
   end_drawing ();
   loop (music, knight, guardian, statusbar, bg_texture)
 

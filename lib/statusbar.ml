@@ -56,6 +56,10 @@ module StatusBar = struct
       (Rectangle.create 0. 0. (49. *. 5. *. hp) (3. *. 5.))
       drawing_position 0. Color.raywhite
 
+  let draw_gold gold =
+    let gold_string = string_of_int gold in
+    draw_text gold_string 170 75 35 Color.raywhite
+
   let draw_blue_manabar statusbar mana =
     let height =
       Rectangle.height (Sprite.dest_rect statusbar.frames "blue_manabar")

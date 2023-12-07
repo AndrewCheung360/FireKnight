@@ -25,6 +25,7 @@ module FrostGuardian = struct
     Hashtbl.add guardian_animations "intro" intro;
     Hashtbl.add guardian_animations "punch" punch;
     Hashtbl.add guardian_animations "hurt" hurt;
+    Hashtbl.add guardian_animations "death" death;
 
     let animations =
       Sprites.AnimatedSprite.create guardian_spritesheet guardian_animations
@@ -79,6 +80,9 @@ module FrostGuardian = struct
       guardian.state <- Idle;
     Sprites.AnimatedSprite.switch_animation guardian.animations "intro"
 
+  let handle_death guardian =
+    Sprites.AnimatedSprite.switch_animation guardian.animations "death"
+
   let handle_hurt guardian =
     if Sprites.AnimatedSprite.is_animation_finished guardian.animations then begin
       guardian.state <- Idle;
@@ -91,10 +95,12 @@ module FrostGuardian = struct
     | Hurt -> handle_hurt guardian
     | Intro -> handle_intro guardian
     | Punch -> handle_punch guardian
+    | Death -> handle_death guardian
     | _ -> handle_idle guardian
 
   let update guardian =
     if guardian.hurt then guardian.state <- Hurt;
+    if guardian.health <= 0. then guardian.state <- Death;
     handle_state guardian;
     Sprites.AnimatedSprite.update_frame_animation guardian.animations;
     if Sprites.AnimatedSprite.is_animation_finished guardian.animations then begin
