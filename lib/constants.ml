@@ -18,4 +18,5 @@ module Constants = struct
   let frost_guardian_scale = 5.5
   let grav = -0.98
   let jump_force = 18.
+  let debug = false
 end
