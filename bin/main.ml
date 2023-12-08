@@ -73,7 +73,7 @@ let rec loop (music, knight, guardian, statusbar, bg_texture, game_state) =
             if guardian.attack_landed = false then begin
               guardian.attack_landed <- true;
               knight.hurt <- true;
-              knight.health <- knight.health -. 200.
+              knight.health <- knight.health -. 250.
             end
           end
         end;

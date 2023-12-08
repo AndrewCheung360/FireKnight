@@ -19,7 +19,7 @@ module Constants = struct
   let grav = -0.98
   let jump_force = 18.
   let debug = false
-  let guardian_max_health = 2000.
+  let guardian_max_health = 5000.
   let max_health = 1000.
   let max_mana = 1000.
 end
