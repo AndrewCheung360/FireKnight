@@ -291,16 +291,16 @@ module Knight = struct
     match knight.state with
     | Attack1Right ->
         inc_gold 10;
-        dec_health 25.
+        dec_health 50.
     | Attack2Right ->
         inc_gold 20;
-        dec_health 50.
+        dec_health 100.
     | Attack3Right ->
         inc_gold 40;
-        dec_health 100.
+        dec_health 200.
     | UltimateRight ->
         inc_gold 100;
-        dec_health 200.;
+        dec_health 400.;
         guardian.hurt <- true
     | _ -> ()
 
@@ -314,19 +314,21 @@ module Knight = struct
         (Vector2.y knight.position +. frame_height)
     in
 
-    let rectangle_width = 250 in
-    let rectangle_height = 180 in
-    let red_color = Color.red in
+    if Constants.debug then begin
+      let rectangle_width = 250 in
+      let rectangle_height = 180 in
+      let red_color = Color.red in
 
-    draw_rectangle_lines
-      (int_of_float (-.Vector2.x drawing_position))
-      (int_of_float
-         (-.(Vector2.y drawing_position -. frame_height)
-         -. float_of_int rectangle_height))
-      rectangle_width rectangle_height red_color;
+      draw_rectangle_lines
+        (int_of_float (-.Vector2.x drawing_position))
+        (int_of_float
+           (-.(Vector2.y drawing_position -. frame_height)
+           -. float_of_int rectangle_height))
+        rectangle_width rectangle_height red_color;
 
-    if hit_box knight <> None then
-      draw_rectangle_lines_ex (Option.get (hit_box knight)) 2. Color.green;
+      if hit_box knight <> None then
+        draw_rectangle_lines_ex (Option.get (hit_box knight)) 2. Color.green
+    end;
     draw_texture_pro
       (Sprites.AnimatedSprite.get_spritesheet knight.animations)
       (Sprites.AnimatedSprite.src_rect knight.animations)

@@ -158,18 +158,20 @@ module FrostGuardian = struct
         (Vector2.y guardian.position +. frame_height)
     in
 
-    let rectangle_width = 450 in
-    let rectangle_height = 500 in
-    let red_color = Color.red in
+    if Constants.debug then begin
+      let rectangle_width = 450 in
+      let rectangle_height = 500 in
+      let red_color = Color.red in
 
-    draw_rectangle_lines
-      (int_of_float (-.Vector2.x drawing_position))
-      (int_of_float
-         (-.(Vector2.y drawing_position -. frame_height)
-         -. float_of_int rectangle_height))
-      rectangle_width rectangle_height red_color;
-    if hit_box guardian <> None then
-      draw_rectangle_lines_ex (Option.get (hit_box guardian)) 2. Color.green;
+      draw_rectangle_lines
+        (int_of_float (-.Vector2.x drawing_position))
+        (int_of_float
+           (-.(Vector2.y drawing_position -. frame_height)
+           -. float_of_int rectangle_height))
+        rectangle_width rectangle_height red_color;
+      if hit_box guardian <> None then
+        draw_rectangle_lines_ex (Option.get (hit_box guardian)) 2. Color.green
+    end;
     draw_texture_pro
       (Sprites.AnimatedSprite.get_spritesheet guardian.animations)
       (Sprites.AnimatedSprite.src_rect guardian.animations)
