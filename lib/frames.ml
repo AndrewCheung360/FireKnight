@@ -45,6 +45,8 @@ module KnightFrames = struct
   let atk2 = FrameDataLoader.load_anim_frame_data jsonfile "atk2"
   let atk3 = FrameDataLoader.load_anim_frame_data jsonfile "atk3"
   let ult = FrameDataLoader.load_anim_frame_data jsonfile "ult_atk"
+  let hurt = FrameDataLoader.load_anim_frame_data jsonfile "hurt"
+  let death = FrameDataLoader.load_anim_frame_data jsonfile "death"
 end
 
 module FrostGuardianFrames = struct
@@ -52,9 +54,16 @@ module FrostGuardianFrames = struct
 
   let jsonfile = "data/frostguardianframedata.json"
   let idle = FrameDataLoader.load_anim_frame_data jsonfile "idle"
-  let walk = FrameDataLoader.load_anim_frame_data jsonfile "walk"
+  let hurt = FrameDataLoader.load_anim_frame_data jsonfile "hurt"
   let punch = FrameDataLoader.load_anim_frame_data jsonfile "punch"
   let intro = FrameDataLoader.load_anim_frame_data jsonfile "intro"
+
+  let death =
+    let reverse_array arr =
+      Array.init (Array.length arr) (fun i -> arr.(Array.length arr - 1 - i))
+    in
+    let f, d = intro in
+    (reverse_array f, reverse_array d)
 end
 
 module HudFrames = struct
@@ -67,4 +76,5 @@ module HudFrames = struct
   let blue_manabar = FrameDataLoader.load_frame_data jsonfile "blue_manabar"
   let portrait_frame = FrameDataLoader.load_frame_data jsonfile "portrait_frame"
   let gold_bar = FrameDataLoader.load_frame_data jsonfile "gold_bar"
+  let menu = FrameDataLoader.load_frame_data jsonfile "menu"
 end

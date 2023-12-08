@@ -1,4 +1,9 @@
 module Constants = struct
+  type game_state =
+    | Playing
+    | Win
+    | GameOver
+
   let screen_width = 1500
   let screen_height = 900
   let fps = 60

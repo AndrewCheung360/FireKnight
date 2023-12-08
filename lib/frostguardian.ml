@@ -11,6 +11,7 @@ module FrostGuardian = struct
     mutable state : States.GuardianStates.t;
     mutable idlecounter : int;
     mutable attack_landed : bool;
+    mutable hurt : bool;
     mutable health : float;
   }
 
@@ -23,6 +24,8 @@ module FrostGuardian = struct
     Hashtbl.add guardian_animations "idle" idle;
     Hashtbl.add guardian_animations "intro" intro;
     Hashtbl.add guardian_animations "punch" punch;
+    Hashtbl.add guardian_animations "hurt" hurt;
+    Hashtbl.add guardian_animations "death" death;
 
     let animations =
       Sprites.AnimatedSprite.create guardian_spritesheet guardian_animations
@@ -39,6 +42,7 @@ module FrostGuardian = struct
       state;
       idlecounter;
       attack_landed = false;
+      hurt = false;
       health = 10000.;
     }
 
@@ -76,17 +80,36 @@ module FrostGuardian = struct
       guardian.state <- Idle;
     Sprites.AnimatedSprite.switch_animation guardian.animations "intro"
 
+  let handle_death guardian =
+    Sprites.AnimatedSprite.switch_animation guardian.animations "death"
+
+  let is_animation_finished guardian =
+    Sprites.AnimatedSprite.is_animation_finished guardian.animations
+
+  let handle_hurt guardian =
+    if Sprites.AnimatedSprite.is_animation_finished guardian.animations then begin
+      guardian.state <- Idle;
+      Sprites.AnimatedSprite.switch_animation guardian.animations "idle"
+    end
+    else Sprites.AnimatedSprite.switch_animation guardian.animations "hurt"
+
   let handle_state guardian =
     match guardian.state with
+    | Hurt -> handle_hurt guardian
     | Intro -> handle_intro guardian
     | Punch -> handle_punch guardian
+    | Death -> handle_death guardian
     | _ -> handle_idle guardian
 
   let update guardian =
+    if guardian.hurt then guardian.state <- Hurt;
+    if guardian.health <= 0. then guardian.state <- Death;
     handle_state guardian;
     Sprites.AnimatedSprite.update_frame_animation guardian.animations;
-    if Sprites.AnimatedSprite.is_animation_finished guardian.animations then
-      guardian.attack_landed <- false
+    if Sprites.AnimatedSprite.is_animation_finished guardian.animations then begin
+      guardian.attack_landed <- false;
+      guardian.hurt <- false
+    end
 
   let hurt_box guardian =
     let frame_height =

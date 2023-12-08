@@ -9,6 +9,8 @@ module KnightStates = struct
     | Falling
     | Attack3Right
     | UltimateRight
+    | Hurt
+    | Death
 
   type t = state
 
@@ -19,12 +21,13 @@ end
 module GuardianStates = struct
   type state =
     | Idle
-    | Walk
+    | Hurt
     | Intro
     | Punch
+    | Death
 
   type t = state
 
-  let loop_states = [ Idle; Walk ]
+  let loop_states = [ Idle ]
   let is_loop_state state = List.mem state loop_states
 end
