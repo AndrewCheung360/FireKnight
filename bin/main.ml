@@ -82,9 +82,11 @@ let rec loop (music, knight, guardian, statusbar, bg_texture, game_state) =
         FrostGuardian.draw guardian;
         Knight.draw knight;
         StatusBar.draw statusbar;
-        StatusBar.draw_blue_manabar statusbar (knight.mana /. 1000.);
-        StatusBar.draw_red_healthbar statusbar (knight.health /. 1000.);
-        StatusBar.draw_boss_healthbar statusbar (guardian.health /. 10000.);
+        StatusBar.draw_blue_manabar statusbar (knight.mana /. Constants.max_mana);
+        StatusBar.draw_red_healthbar statusbar
+          (knight.health /. Constants.max_health);
+        StatusBar.draw_boss_healthbar statusbar
+          (guardian.health /. Constants.guardian_max_health);
         StatusBar.draw_gold knight.gold;
         end_drawing ();
         if

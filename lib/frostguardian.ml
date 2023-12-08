@@ -43,7 +43,7 @@ module FrostGuardian = struct
       idlecounter;
       attack_landed = false;
       hurt = false;
-      health = 10000.;
+      health = Constants.guardian_max_health;
     }
 
   let handle_idle guardian =
