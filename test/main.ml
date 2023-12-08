@@ -35,7 +35,11 @@ let knight = knight_setup ()
 
 let create_knight_animation_test name exp =
   eq name exp
-    ( knight.state,
+    ( Vector2.x knight.position,
+      Vector2.y knight.position,
+      Vector2.x knight.velocity,
+      Vector2.y knight.velocity,
+      knight.state,
       knight.attack_landed,
       knight.hurt,
       knight.health,
@@ -52,18 +56,27 @@ let handle_death_anim name exp =
   let _ = Knight.handle_death knight in
   eq name exp (AnimatedSprite.get_anim_name knight.animations)
 
+let handle_idle_anim name exp =
+  let _ = Knight.handle_idle knight in
+  eq name exp (AnimatedSprite.get_anim_name knight.animations)
+
 let knight_tests =
   [
     create_knight_animation_test "create_knight_animation"
-      ( States.KnightStates.Idle,
+      ( 0.,
+        Constants.ground_y,
+        0.,
+        0.,
+        States.KnightStates.Idle,
         false,
         false,
         Constants.max_health,
         Constants.max_mana,
         0 );
-    get_frame_height_test "get_frame_height" 176.;
+    get_frame_height_test "get_frame_height idle" 176.;
     handle_jump_input_test "handle_jump_input" States.KnightStates.Jump;
     handle_death_anim "handle_death_anim" "death";
+    handle_idle_anim "handle_idle_anim" "idle";
   ]
 
 let suite = "FireKnight Suite" >::: List.flatten [ state_tests; knight_tests ]
