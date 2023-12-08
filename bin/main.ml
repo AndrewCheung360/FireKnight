@@ -10,8 +10,7 @@ let width = Constants.screen_width
 let height = Constants.screen_height
 let fps = Constants.fps
 
-let setup () =
-  init_window width height "Fire Knight";
+let reset () =
   init_audio_device ();
   let music = load_music_stream "assets/audio/background_music.mp3" in
 
@@ -23,6 +22,10 @@ let setup () =
     StatusBar.create_statusbar (),
     Background.initialize (),
     Constants.Playing )
+
+let setup () =
+  init_window width height "Fire Knight";
+  reset ()
 
 let rec loop (music, knight, guardian, statusbar, bg_texture, game_state) =
   if window_should_close () then begin
@@ -107,7 +110,7 @@ let rec loop (music, knight, guardian, statusbar, bg_texture, game_state) =
         else loop (music, knight, guardian, statusbar, bg_texture, game_state)
 
 and restart () =
-  let music, knight, guardian, statusbar, bg_texture, _ = setup () in
+  let music, knight, guardian, statusbar, bg_texture, _ = reset () in
   loop (music, knight, guardian, statusbar, bg_texture, Constants.Playing)
 
 let () = setup () |> loop
