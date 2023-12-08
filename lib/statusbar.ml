@@ -1,9 +1,7 @@
 module StatusBar = struct
   open Raylib
-  open Frames
+  open Frames.HudFrames
   open Sprites
-
-  type frame = Sprite.frame
 
   type t = {
     sprite_sheet : Texture.t;
@@ -16,13 +14,13 @@ module StatusBar = struct
   let create_statusbar () =
     let hud_spritesheet = load_texture "assets/HUD/GUI.png" in
     let status_bar_frames = Hashtbl.create 10 in
-    Hashtbl.add status_bar_frames "healthbar" HudFrames.healthbar;
-    Hashtbl.add status_bar_frames "red_healthbar" HudFrames.red_healthbar;
-    Hashtbl.add status_bar_frames "manabar" HudFrames.manabar;
-    Hashtbl.add status_bar_frames "blue_manabar" HudFrames.blue_manabar;
-    Hashtbl.add status_bar_frames "portrait_frame" HudFrames.portrait_frame;
-    Hashtbl.add status_bar_frames "gold_bar" HudFrames.gold_bar;
-    Hashtbl.add status_bar_frames "menu" HudFrames.menu;
+    Hashtbl.add status_bar_frames "healthbar" healthbar;
+    Hashtbl.add status_bar_frames "red_healthbar" red_healthbar;
+    Hashtbl.add status_bar_frames "manabar" manabar;
+    Hashtbl.add status_bar_frames "blue_manabar" blue_manabar;
+    Hashtbl.add status_bar_frames "portrait_frame" portrait_frame;
+    Hashtbl.add status_bar_frames "gold_bar" gold_bar;
+    Hashtbl.add status_bar_frames "menu" menu;
     {
       sprite_sheet = hud_spritesheet;
       health = 100;

@@ -1,9 +1,6 @@
-module FrameDataLoader = struct
-  type anim_frame = Sprites.AnimatedSprite.frame
-  type frame = Sprites.Sprite.frame
+type frame = Sprites.frame
 
-  (**load_anim_frame_data should read the json file from filepath and based on
-     anim name extract the frame data and durations into a tuple*)
+module FrameDataLoader = struct
   let load_anim_frame_data filepath anim_name =
     let json = Yojson.Basic.from_file filepath in
     let open Yojson.Basic.Util in
@@ -16,7 +13,7 @@ module FrameDataLoader = struct
           let frame_y = frame |> member "frame_y" |> to_float in
           let frame_width = frame |> member "frame_width" |> to_float in
           let frame_height = frame |> member "frame_height" |> to_float in
-          { Sprites.AnimatedSprite.frame_x; frame_y; frame_width; frame_height })
+          { Sprites.frame_x; frame_y; frame_width; frame_height })
         frames
     in
     let durations = List.map (fun duration -> duration |> to_float) durations in
@@ -30,12 +27,10 @@ module FrameDataLoader = struct
     let frame_y = frame |> member "frame_y" |> to_float in
     let frame_width = frame |> member "frame_width" |> to_float in
     let frame_height = frame |> member "frame_height" |> to_float in
-    { Sprites.Sprite.frame_x; frame_y; frame_width; frame_height }
+    { Sprites.frame_x; frame_y; frame_width; frame_height }
 end
 
 module KnightFrames = struct
-  type frame = Sprites.AnimatedSprite.frame
-
   let jsonfile = "data/knightframedata.json"
   let idle = FrameDataLoader.load_anim_frame_data jsonfile "idle"
   let run = FrameDataLoader.load_anim_frame_data jsonfile "run"
@@ -50,8 +45,6 @@ module KnightFrames = struct
 end
 
 module FrostGuardianFrames = struct
-  type frame = Sprites.AnimatedSprite.frame
-
   let jsonfile = "data/frostguardianframedata.json"
   let idle = FrameDataLoader.load_anim_frame_data jsonfile "idle"
   let hurt = FrameDataLoader.load_anim_frame_data jsonfile "hurt"
@@ -67,8 +60,6 @@ module FrostGuardianFrames = struct
 end
 
 module HudFrames = struct
-  type frame = Sprites.Sprite.frame
-
   let jsonfile = "data/hudframedata.json"
   let healthbar = FrameDataLoader.load_frame_data jsonfile "healthbar"
   let red_healthbar = FrameDataLoader.load_frame_data jsonfile "red_healthbar"

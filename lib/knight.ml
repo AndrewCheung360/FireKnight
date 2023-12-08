@@ -221,7 +221,7 @@ module Knight = struct
     | RunRight | RunLeft -> handle_run knight
     | _ -> handle_idle knight
 
-  let knight_dead knight = if knight.health <= 0. then knight.state <- Death
+  let set_dead_state knight = if knight.health <= 0. then knight.state <- Death
 
   let reset_atk_hurt knight =
     if Sprites.AnimatedSprite.is_animation_finished knight.animations then begin
@@ -233,7 +233,7 @@ module Knight = struct
     if knight.mana < 1000. then knight.mana <- knight.mana +. 1.
 
   let update knight =
-    knight_dead knight;
+    set_dead_state knight;
     apply_grav knight;
     handle_input knight;
     Sprites.AnimatedSprite.update_frame_animation knight.animations;

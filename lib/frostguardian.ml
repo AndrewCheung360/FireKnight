@@ -46,48 +46,49 @@ module FrostGuardian = struct
       health = Constants.guardian_max_health;
     }
 
-  let handle_idle guardian =
-    Sprites.AnimatedSprite.switch_animation guardian.animations "idle";
-    guardian.idlecounter <- guardian.idlecounter + 1;
-    if
-      Sprites.AnimatedSprite.is_animation_finished guardian.animations
-      && guardian.idlecounter >= 210
-    then begin
+  let is_animation_finished guardian =
+    Sprites.AnimatedSprite.is_animation_finished guardian.animations
+
+  let start_punch guardian =
+    if is_animation_finished guardian && guardian.idlecounter >= 210 then begin
       guardian.idlecounter <- 0;
       guardian.state <- Punch
     end
 
+  let handle_idle guardian =
+    Sprites.AnimatedSprite.switch_animation guardian.animations "idle";
+    guardian.idlecounter <- guardian.idlecounter + 1;
+    start_punch guardian
+
+  let handle_punch_pos guardian =
+    let frame_index =
+      Sprites.AnimatedSprite.current_frame_index guardian.animations
+    in
+    if frame_index = 6 || frame_index = 7 || frame_index = 8 then
+      let position = Vector2.create (-600.) Constants.ground_y in
+      guardian.position <- position
+    else
+      let position = Vector2.create (-900.) Constants.ground_y in
+      guardian.position <- position
+
   let handle_punch guardian =
     Sprites.AnimatedSprite.switch_animation guardian.animations "punch";
-    if Sprites.AnimatedSprite.is_animation_finished guardian.animations then begin
+    if is_animation_finished guardian then begin
       guardian.state <- Idle;
       let position = Vector2.create (-900.) Constants.ground_y in
       guardian.position <- position
     end
-    else
-      let frame_index =
-        Sprites.AnimatedSprite.current_frame_index guardian.animations
-      in
-      if frame_index = 6 || frame_index = 7 || frame_index = 8 then
-        let position = Vector2.create (-600.) Constants.ground_y in
-        guardian.position <- position
-      else
-        let position = Vector2.create (-900.) Constants.ground_y in
-        guardian.position <- position
+    else handle_punch_pos guardian
 
   let handle_intro guardian =
-    if Sprites.AnimatedSprite.is_animation_finished guardian.animations then
-      guardian.state <- Idle;
+    if is_animation_finished guardian then guardian.state <- Idle;
     Sprites.AnimatedSprite.switch_animation guardian.animations "intro"
 
   let handle_death guardian =
     Sprites.AnimatedSprite.switch_animation guardian.animations "death"
 
-  let is_animation_finished guardian =
-    Sprites.AnimatedSprite.is_animation_finished guardian.animations
-
   let handle_hurt guardian =
-    if Sprites.AnimatedSprite.is_animation_finished guardian.animations then begin
+    if is_animation_finished guardian then begin
       guardian.state <- Idle;
       Sprites.AnimatedSprite.switch_animation guardian.animations "idle"
     end
@@ -101,20 +102,35 @@ module FrostGuardian = struct
     | Death -> handle_death guardian
     | _ -> handle_idle guardian
 
-  let update guardian =
-    if guardian.hurt then guardian.state <- Hurt;
-    if guardian.health <= 0. then guardian.state <- Death;
-    handle_state guardian;
-    Sprites.AnimatedSprite.update_frame_animation guardian.animations;
-    if Sprites.AnimatedSprite.is_animation_finished guardian.animations then begin
+  let reset_atk_hurt guardian =
+    if is_animation_finished guardian then begin
       guardian.attack_landed <- false;
       guardian.hurt <- false
     end
 
+  let set_hurt_state guardian = if guardian.hurt then guardian.state <- Hurt
+
+  let set_dead_state guardian =
+    if guardian.health <= 0. then guardian.state <- Death
+
+  let update guardian =
+    set_hurt_state guardian;
+    set_dead_state guardian;
+    handle_state guardian;
+    Sprites.AnimatedSprite.update_frame_animation guardian.animations;
+    reset_atk_hurt guardian
+
+  let get_frame_height guardian =
+    Rectangle.height (Sprites.AnimatedSprite.dest_rect guardian.animations)
+
+  let get_drawing_pos guardian =
+    let frame_height = get_frame_height guardian in
+    Vector2.create
+      (Vector2.x guardian.position)
+      (Vector2.y guardian.position +. frame_height)
+
   let hurt_box guardian =
-    let frame_height =
-      Rectangle.height (Sprites.AnimatedSprite.dest_rect guardian.animations)
-    in
+    let frame_height = get_frame_height guardian in
     let drawing_position =
       Vector2.create
         (Vector2.x guardian.position)
@@ -131,9 +147,7 @@ module FrostGuardian = struct
       (float_of_int rectangle_height)
 
   let hit_box_helper x y w h guardian =
-    let frame_height =
-      Rectangle.height (Sprites.AnimatedSprite.dest_rect guardian.animations)
-    in
+    let frame_height = get_frame_height guardian in
     let guardian_pos_x = Vector2.x guardian.position in
     let guardian_pos_y = Vector2.y guardian.position +. frame_height in
 
@@ -148,30 +162,22 @@ module FrostGuardian = struct
     | Punch, 6 -> Some (hit_box_helper 0. 88. 400 300 guardian)
     | _ -> None
 
-  let draw guardian =
-    let frame_height =
-      Rectangle.height (Sprites.AnimatedSprite.dest_rect guardian.animations)
-    in
-    let drawing_position =
-      Vector2.create
-        (Vector2.x guardian.position)
-        (Vector2.y guardian.position +. frame_height)
-    in
+  let draw_debug guardian =
+    let frame_height = get_frame_height guardian in
+    let drawing_position = get_drawing_pos guardian in
 
     if Constants.debug then begin
-      let rectangle_width = 450 in
-      let rectangle_height = 500 in
-      let red_color = Color.red in
-
       draw_rectangle_lines
         (int_of_float (-.Vector2.x drawing_position))
-        (int_of_float
-           (-.(Vector2.y drawing_position -. frame_height)
-           -. float_of_int rectangle_height))
-        rectangle_width rectangle_height red_color;
+        (int_of_float (-.(Vector2.y drawing_position -. frame_height) -. 500.))
+        450 500 Color.red;
       if hit_box guardian <> None then
         draw_rectangle_lines_ex (Option.get (hit_box guardian)) 2. Color.green
-    end;
+    end
+
+  let draw guardian =
+    let drawing_position = get_drawing_pos guardian in
+    draw_debug guardian;
     draw_texture_pro
       (Sprites.AnimatedSprite.get_spritesheet guardian.animations)
       (Sprites.AnimatedSprite.src_rect guardian.animations)
