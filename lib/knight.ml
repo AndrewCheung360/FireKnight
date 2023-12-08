@@ -46,8 +46,8 @@ module Knight = struct
       state;
       attack_landed = false;
       hurt = false;
-      health = 1000.;
-      mana = 1000.;
+      health = Constants.max_health;
+      mana = Constants.max_mana;
       gold = 0;
     }
 
