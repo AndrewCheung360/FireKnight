@@ -102,7 +102,11 @@ let rec loop (music, knight, guardian, statusbar, bg_texture, game_state) =
         else loop (music, knight, guardian, statusbar, bg_texture, game_state)
     | _ ->
         begin_drawing ();
-        StatusBar.draw_restart_screen statusbar knight.gold;
+        let gold =
+          if game_state = Constants.Win then knight.gold + 10000
+          else knight.gold
+        in
+        StatusBar.draw_restart_screen statusbar gold;
         end_drawing ();
         if is_key_pressed Key.R then begin
           unload_music_stream music;

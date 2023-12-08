@@ -307,11 +307,11 @@ module Knight = struct
 
   let apply_damage knight (guardian : Frostguardian.FrostGuardian.t) =
     match knight.state with
-    | Attack1Right -> handle_gold_health knight guardian 10 50.
-    | Attack2Right -> handle_gold_health knight guardian 20 100.
-    | Attack3Right -> handle_gold_health knight guardian 50 200.
+    | Attack1Right -> handle_gold_health knight guardian 100 50.
+    | Attack2Right -> handle_gold_health knight guardian 200 100.
+    | Attack3Right -> handle_gold_health knight guardian 500 200.
     | UltimateRight ->
-        handle_gold_health knight guardian 100 400.;
+        handle_gold_health knight guardian 1000 400.;
         guardian.hurt <- true
     | _ -> ()
 
