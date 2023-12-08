@@ -73,7 +73,7 @@ let rec loop (music, knight, guardian, statusbar, bg_texture, game_state) =
             if guardian.attack_landed = false then begin
               guardian.attack_landed <- true;
               knight.hurt <- true;
-              knight.health <- knight.health -. 200.
+              knight.health <- knight.health -. 250.
             end
           end
         end;
@@ -82,9 +82,11 @@ let rec loop (music, knight, guardian, statusbar, bg_texture, game_state) =
         FrostGuardian.draw guardian;
         Knight.draw knight;
         StatusBar.draw statusbar;
-        StatusBar.draw_blue_manabar statusbar (knight.mana /. 1000.);
-        StatusBar.draw_red_healthbar statusbar (knight.health /. 1000.);
-        StatusBar.draw_boss_healthbar statusbar (guardian.health /. 10000.);
+        StatusBar.draw_blue_manabar statusbar (knight.mana /. Constants.max_mana);
+        StatusBar.draw_red_healthbar statusbar
+          (knight.health /. Constants.max_health);
+        StatusBar.draw_boss_healthbar statusbar
+          (guardian.health /. Constants.guardian_max_health);
         StatusBar.draw_gold knight.gold;
         end_drawing ();
         if
@@ -100,7 +102,11 @@ let rec loop (music, knight, guardian, statusbar, bg_texture, game_state) =
         else loop (music, knight, guardian, statusbar, bg_texture, game_state)
     | _ ->
         begin_drawing ();
-        StatusBar.draw_restart_screen statusbar knight.gold;
+        let gold =
+          if game_state = Constants.Win then knight.gold + 10000
+          else knight.gold
+        in
+        StatusBar.draw_restart_screen statusbar gold;
         end_drawing ();
         if is_key_pressed Key.R then begin
           unload_music_stream music;

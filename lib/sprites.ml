@@ -1,13 +1,14 @@
+open Raylib
+open Constants
+
+type frame = {
+  frame_x : float;
+  frame_y : float;
+  frame_width : float;
+  frame_height : float;
+}
+
 module Sprite = struct
-  open Raylib
-
-  type frame = {
-    frame_x : float;
-    frame_y : float;
-    frame_width : float;
-    frame_height : float;
-  }
-
   type t = {
     sprite_sheet : Texture.t;
     frames : (string, frame) Hashtbl.t;
@@ -42,20 +43,8 @@ module Sprite = struct
 end
 
 module AnimatedSprite = struct
-  open Raylib
-  open Constants
-
-  type frame = {
-    frame_x : float;
-    frame_y : float;
-    frame_width : float;
-    frame_height : float;
-  }
-
   type t = {
     sprite_sheet : Texture.t;
-    (* The keys for the hashtable are the animation names and has a tuple as
-       it's values with the rectangles and the duration array *)
     animations : (string, frame array * float array) Hashtbl.t;
     scale : float;
     mutable current_frame : int;
@@ -115,8 +104,6 @@ module AnimatedSprite = struct
       (get_src_width anim *. anim.scale)
       (get_src_height anim *. anim.scale)
 
-  (** Returns true if animation is finished by checking if the current frame is
-      the last frame*)
   let is_animation_finished anim =
     let frames, _ = Hashtbl.find anim.animations anim.current_animation in
     if anim.current_frame = Array.length frames - 1 then true else false
