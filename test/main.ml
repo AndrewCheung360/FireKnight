@@ -143,6 +143,13 @@ let hurt_box_test name exp anim init_x init_y =
   eq name exp
     (Rectangle.x h, Rectangle.y h, Rectangle.width h, Rectangle.height h)
 
+let handle_state_test_g name exp state =
+  let _ =
+    guardian.state <- state;
+    FrostGuardian.handle_state guardian
+  in
+  eq name exp (AnimatedSprite.get_anim_name knight.animations)
+
 let knight_tests =
   [
     get_frame_height_test_k "get_frame_height idle" 176. "idle";
@@ -179,6 +186,7 @@ let guardian_tests =
     handle_punch_anim_g "handle_punch_anim guard" "punch";
     set_hurt_state_g "set_hurt_state_input" States.GuardianStates.Hurt;
     set_dead_state_g "set_dead_state_input" States.GuardianStates.Death;
+    handle_state_test_g "handle_state: Idle" "idle" States.GuardianStates.Idle;
   ]
 
 let sprite_tests = []
