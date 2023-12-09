@@ -72,6 +72,14 @@ let handle_idle_anim_k name exp =
   let _ = Knight.handle_idle knight in
   eq name exp (AnimatedSprite.get_anim_name knight.animations)
 
+let handle_knockback_test name exp init_x =
+  let _ =
+    knight.position <- Vector2.create init_x (Vector2.y knight.position);
+    Knight.handle_knockback knight
+  in
+  eq name exp
+    (Vector2.x knight.position, AnimatedSprite.get_anim_name knight.animations)
+
 let mana_regen_test name exp m =
   let _ =
     knight.mana <- m;
@@ -127,6 +135,7 @@ let knight_tests =
       Knight.handle_attack_2;
     handle_attack_test "handle_ultimate sets correct animation" "ult"
       Knight.handle_ultimate;
+    handle_knockback_test "handle_knockback" (0., "hurt") (-15.);
   ]
 
 let guardian_tests =
