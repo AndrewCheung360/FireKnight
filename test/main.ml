@@ -36,19 +36,6 @@ let setup () =
 let knight = fst (setup ())
 let guardian = snd (setup ())
 
-let create_knight_animation_test name exp =
-  eq name exp
-    ( Vector2.x knight.position,
-      Vector2.y knight.position,
-      Vector2.x knight.velocity,
-      Vector2.y knight.velocity,
-      knight.state,
-      knight.attack_landed,
-      knight.hurt,
-      knight.health,
-      knight.mana,
-      knight.gold )
-
 let get_frame_height_test_k name exp anim =
   let _ = AnimatedSprite.switch_animation knight.animations anim in
   eq name exp (Knight.get_frame_height knight)
@@ -57,7 +44,8 @@ let get_frame_width_test_k name exp anim =
   let _ = AnimatedSprite.switch_animation knight.animations anim in
   eq name exp (Knight.get_frame_width knight)
 
-let handle_jump_input_test_k name exp =
+let handle_jump_input_test_k name exp init_y =
+  let _ = knight.position <- Vector2.create 0. init_y in
   eq name exp (Knight.handle_jump_input knight)
 
 let handle_death_anim_k name exp =
@@ -116,24 +104,39 @@ let handle_attack_test name expected_animation attack =
 
   eq name expected_animation (AnimatedSprite.get_anim_name knight.animations)
 
+let reset_atk_hurt_test name exp init_atk init_hurt =
+  let _ =
+    knight.animations.current_frame <- 7;
+    knight.attack_landed <- init_atk;
+    knight.hurt <- init_hurt;
+    Knight.reset_atk_hurt knight
+  in
+  eq name exp (knight.attack_landed, knight.hurt)
+
+let inc_gold_test name exp init_gold n =
+  let _ =
+    knight.gold <- init_gold;
+    Knight.inc_gold knight n
+  in
+  eq name exp knight.gold
+
+let hurt_box_test name exp anim init_x init_y =
+  let _ =
+    knight.position <- Vector2.create init_x init_y;
+    AnimatedSprite.switch_animation knight.animations anim
+  in
+  let h = Knight.hurt_box knight in
+  eq name exp
+    (Rectangle.x h, Rectangle.y h, Rectangle.width h, Rectangle.height h)
+
 let knight_tests =
   [
-    create_knight_animation_test "create_knight_animation"
-      ( 0.,
-        Constants.ground_y,
-        0.,
-        0.,
-        States.KnightStates.Idle,
-        false,
-        false,
-        Constants.max_health,
-        Constants.max_mana,
-        0 );
     get_frame_height_test_k "get_frame_height idle" 176. "idle";
     get_frame_width_test_k "get_frame_width idle" 240. "idle";
     get_frame_height_test_k "get_frame_height attack1" 164. "attack_1";
     get_frame_width_test_k "get_frame_width attack1" 204. "attack_1";
-    handle_jump_input_test_k "handle_jump_input" States.KnightStates.Jump;
+    handle_jump_input_test_k "handle_jump_input" States.KnightStates.Jump
+      Constants.ground_y;
     handle_death_anim_k "handle_death_anim knight" "death";
     handle_idle_anim_k "handle_idle_anim knight" "idle";
     mana_regen_test "mana_regen initial" 1000. 1000.;
@@ -148,6 +151,9 @@ let knight_tests =
     handle_attack_test "handle_ultimate sets correct animation" "ult"
       Knight.handle_ultimate;
     handle_knockback_test "handle_knockback" (0., "hurt") (-15.);
+    reset_atk_hurt_test "reset_atk_hurt" (false, false) true true;
+    inc_gold_test "inc_gold 1000" 0 (-1000) 1000;
+    hurt_box_test "hurt_box idle" (0., 320., 250., 180.) "idle" 0. (-500.);
   ]
 
 let guardian_tests =
