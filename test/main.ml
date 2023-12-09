@@ -129,6 +129,13 @@ let hit_box_test_k name exp anim state index init_x init_y =
 let handle_attack_input_test name exp atk =
   eq name exp (Knight.handle_attack_input knight atk)
 
+let handle_apply_grav name exp lvl =
+  let _ =
+    knight.velocity <- Vector2.create 0.0 0.;
+    knight.position <- Vector2.create (Vector2.x knight.position) lvl;
+    Knight.apply_grav
+  in
+  eq name exp (Vector2.y knight.position)
 (* !: End of Knight Helper Functions *)
 
 (* !: Beginning of Frost Guardian Helper Functions *)
@@ -292,6 +299,8 @@ let knight_tests =
     handle_attack_input_test "handle_attack_input attack2" Attack2Right "atk2";
     handle_attack_input_test "handle_attack_input attack3" Attack3Right "atk3";
     handle_attack_input_test "handle_attack_input ultimate" UltimateRight "ult";
+    handle_apply_grav "apply grav on ground" Constants.ground_y
+      Constants.ground_y;
   ]
 
 let guardian_tests =
