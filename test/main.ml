@@ -57,10 +57,6 @@ let get_frame_width_test_k name exp anim =
   let _ = AnimatedSprite.switch_animation knight.animations anim in
   eq name exp (Knight.get_frame_width knight)
 
-let get_frame_height_test_g name exp anim =
-  let _ = AnimatedSprite.switch_animation guardian.animations anim in
-  eq name exp (FrostGuardian.get_frame_height guardian)
-
 let handle_jump_input_test_k name exp =
   eq name exp (Knight.handle_jump_input knight)
 
@@ -69,7 +65,7 @@ let handle_death_anim_k name exp =
   eq name exp (AnimatedSprite.get_anim_name knight.animations)
 
 let handle_idle_anim_k name exp =
-  let _ = Knight.handle_idle knight in
+  let _ = FrostGuardian.handle_idle guardian in
   eq name exp (AnimatedSprite.get_anim_name knight.animations)
 
 let handle_knockback_test name exp init_x =
@@ -79,6 +75,22 @@ let handle_knockback_test name exp init_x =
   in
   eq name exp
     (Vector2.x knight.position, AnimatedSprite.get_anim_name knight.animations)
+
+let get_frame_height_test_g name exp anim =
+  let _ = AnimatedSprite.switch_animation guardian.animations anim in
+  eq name exp (FrostGuardian.get_frame_height guardian)
+
+let handle_death_anim_g name exp =
+  let _ = FrostGuardian.handle_death guardian in
+  eq name exp (AnimatedSprite.get_anim_name guardian.animations)
+
+let handle_idle_anim_g name exp =
+  let _ = FrostGuardian.handle_idle guardian in
+  eq name exp (AnimatedSprite.get_anim_name guardian.animations)
+
+let handle_punch_anim_g name exp =
+  let _ = FrostGuardian.handle_punch guardian in
+  eq name exp (AnimatedSprite.get_anim_name guardian.animations)
 
 let mana_regen_test name exp m =
   let _ =
@@ -142,6 +154,9 @@ let guardian_tests =
   [
     get_frame_height_test_g "get_frame_height idle" 506. "idle";
     get_frame_height_test_g "get_frame_height attack1" 82.5 "intro";
+    handle_death_anim_g "handle_death_anim" "death";
+    handle_idle_anim_g "handle_idle_anim" "idle";
+    handle_punch_anim_g "handle_punch_anim" "punch";
   ]
 
 let sprite_tests = []
