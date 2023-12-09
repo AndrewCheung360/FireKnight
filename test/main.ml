@@ -6,6 +6,7 @@ open Constants
 open Raylib
 open Knight
 open Sprites
+open Frostguardian
 
 let eq name expected_output actual_output =
   name >:: fun _ -> assert_equal expected_output actual_output
@@ -26,12 +27,14 @@ let state_tests =
       States.GuardianStates.Punch;
   ]
 
-let knight_setup () =
+let setup () =
   init_window 1 1 "Test";
   set_target_fps 60;
-  Knight.create_knight_animation ()
+  ( Knight.create_knight_animation (),
+    FrostGuardian.create_frostguardian_animation () )
 
-let knight = knight_setup ()
+let knight = fst (setup ())
+let guardian = snd (setup ())
 
 let create_knight_animation_test name exp =
   eq name exp
@@ -46,17 +49,20 @@ let create_knight_animation_test name exp =
       knight.mana,
       knight.gold )
 
-let get_frame_height_test name exp =
+let get_frame_height_test_k name exp =
   eq name exp (Knight.get_frame_height knight)
 
-let handle_jump_input_test name exp =
+let get_frame_height_test_g name exp =
+  eq name exp (FrostGuardian.get_frame_height guardian)
+
+let handle_jump_input_test_k name exp =
   eq name exp (Knight.handle_jump_input knight)
 
-let handle_death_anim name exp =
+let handle_death_anim_k name exp =
   let _ = Knight.handle_death knight in
   eq name exp (AnimatedSprite.get_anim_name knight.animations)
 
-let handle_idle_anim name exp =
+let handle_idle_anim_k name exp =
   let _ = Knight.handle_idle knight in
   eq name exp (AnimatedSprite.get_anim_name knight.animations)
 
@@ -73,11 +79,25 @@ let knight_tests =
         Constants.max_health,
         Constants.max_mana,
         0 );
-    get_frame_height_test "get_frame_height idle" 176.;
-    handle_jump_input_test "handle_jump_input" States.KnightStates.Jump;
-    handle_death_anim "handle_death_anim" "death";
-    handle_idle_anim "handle_idle_anim" "idle";
+    get_frame_height_test_k "get_frame_height idle" 176.;
+    handle_jump_input_test_k "handle_jump_input" States.KnightStates.Jump;
+    handle_death_anim_k "handle_death_anim" "death";
+    handle_idle_anim_k "handle_idle_anim" "idle";
   ]
 
-let suite = "FireKnight Suite" >::: List.flatten [ state_tests; knight_tests ]
+let guardian_tests = [ get_frame_height_test_g "get_frame_height idle" 506. ]
+let sprite_tests = []
+let animated_sprite_tests = []
+
+let suite =
+  "FireKnight Suite"
+  >::: List.flatten
+         [
+           state_tests;
+           knight_tests;
+           guardian_tests;
+           sprite_tests;
+           animated_sprite_tests;
+         ]
+
 let () = run_test_tt_main suite
