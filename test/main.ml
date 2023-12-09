@@ -36,6 +36,7 @@ let setup () =
 
 let knight, guardian, statusbar = setup ()
 
+(* !: Beginning of Knight Helper Functions *)
 let get_frame_height_test_k name exp anim =
   let _ = AnimatedSprite.switch_animation knight.animations anim in
   eq name exp (Knight.get_frame_height knight)
@@ -74,7 +75,38 @@ let handle_idle_anim_g name exp =
 let handle_punch_anim_g name exp =
   let _ = FrostGuardian.handle_punch guardian in
   eq name exp (AnimatedSprite.get_anim_name guardian.animations)
-(* !: Beginning of Frost Guardian Helper Functions *)
+(* !: End of Frost Guardian Helper Functions *)
+
+(* !: Beginning of Sprite Helper Functions*)
+let handle_get_test name exp get_name =
+  let act = get_name statusbar.frames "healthbar" in
+  eq name exp act
+
+let handle_dest_rect name exp =
+  let act = Sprites.Sprite.dest_rect statusbar.frames "healthbar" in
+  eq name exp (Raylib.Rectangle.width act, Raylib.Rectangle.height act)
+
+(* !: End of Sprite Helper Functions *)
+
+(* !: Beginning of AnimatedSprite Helper Functions *)
+let handle_current_index name exp =
+  let current_index = AnimatedSprite.current_frame_index knight.animations in
+  Printf.printf "This is the current index: %d\n" current_index;
+  eq name exp current_index
+
+let handle_anim_get_test name exp get_name =
+  let act = get_name knight.animations in
+  eq name exp act
+
+let handle_anim_dest_rect name exp =
+  let act = AnimatedSprite.dest_rect knight.animations in
+  eq name exp (Raylib.Rectangle.width act, Raylib.Rectangle.height act)
+
+let handle_is_anim_finished name exp =
+  let act = AnimatedSprite.is_animation_finished knight.animations in
+  eq name exp act
+
+(* !: End of AnimatedSprite Helper Functions *)
 
 let handle_knockback_test name exp init_x =
   let _ =
@@ -108,13 +140,6 @@ let mana_regen_test name exp m =
 let dec_health_test name exp n =
   let _ = Knight.dec_health guardian n in
   eq name exp guardian.health
-
-(* !: Beginning of Sprite Helper Functions*)
-let handle_get_test name exp get_name =
-  let act = get_name statusbar.frames "healthbar" in
-  eq name exp act
-
-(* !: End of Sprite Helper Functions *)
 
 let reset_atk_hurt_test name exp init_atk init_hurt =
   let _ =
@@ -239,9 +264,25 @@ let sprite_tests =
       Sprites.Sprite.get_src_width;
     handle_get_test "handle_get_src_height testing" 7.
       Sprites.Sprite.get_src_height;
+    handle_dest_rect "handle_dest_rect testing" (260., 35.);
   ]
 
-let animated_sprite_tests = []
+let animated_sprite_tests =
+  [
+    handle_current_index "handle_current index testing" 0;
+    handle_anim_get_test "handle_get_src_x Animated Sprite Testing" 100.
+      AnimatedSprite.get_src_x;
+    handle_anim_get_test "handle_get_src_y Animated Sprite Testing" 83.
+      AnimatedSprite.get_src_y;
+    handle_anim_get_test "handle_get_src_width Animated Sprite Testing" 60.
+      AnimatedSprite.get_src_width;
+    handle_anim_get_test "handle_get_src_height Animated Sprite Testing" 44.
+      AnimatedSprite.get_src_height;
+    handle_anim_get_test "handle_get_anim_name Animated Sprite Testing" "idle"
+      AnimatedSprite.get_anim_name;
+    handle_anim_dest_rect "handle Animated Sprite dest_rect testing" (240., 176.);
+    handle_is_anim_finished "handle is_animated_finish in Animated Sprite" false;
+  ]
 
 let suite =
   "FireKnight Suite"
