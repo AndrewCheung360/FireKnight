@@ -55,7 +55,8 @@ module StatusBar = struct
     draw_texture_pro statusbar.sprite_sheet
       (Rectangle.create (-135.) 20. (-52.) 7.)
       (Rectangle.create 0. 0. (52. *. 28. *. hp) (7. *. 8.))
-      drawing_position 0. Color.raywhite
+      drawing_position 0. Color.raywhite;
+    draw_text "FROST GUARDIAN" 700 10 45 Color.raywhite
 
   let draw_red_healthbar statusbar hp =
     let height =
