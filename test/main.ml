@@ -92,6 +92,20 @@ let handle_punch_anim_g name exp =
   let _ = FrostGuardian.handle_punch guardian in
   eq name exp (AnimatedSprite.get_anim_name guardian.animations)
 
+let set_hurt_state_g name exp =
+  let _ =
+    guardian.hurt <- true;
+    FrostGuardian.set_hurt_state guardian
+  in
+  eq name exp guardian.state
+
+let set_dead_state_g name exp =
+  let _ =
+    guardian.health <- 0.;
+    FrostGuardian.set_dead_state guardian
+  in
+  eq name exp guardian.state
+
 let mana_regen_test name exp m =
   let _ =
     knight.mana <- m;
@@ -157,6 +171,8 @@ let guardian_tests =
     handle_death_anim_g "handle_death_anim guard" "death";
     handle_idle_anim_g "handle_idle_anim guard" "idle";
     handle_punch_anim_g "handle_punch_anim guard" "punch";
+    set_hurt_state_g "set_hurt_state_input" States.GuardianStates.Hurt;
+    set_dead_state_g "set_dead_state_input" States.GuardianStates.Death;
   ]
 
 let sprite_tests = []
