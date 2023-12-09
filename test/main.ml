@@ -121,18 +121,18 @@ let knight_tests =
     dec_health_test "dec_health 1000"
       (Constants.guardian_max_health -. 1000.)
       1000.;
-  ]
-
-let guardian_tests =
-  [
-    get_frame_height_test_g "get_frame_height idle" 506. "idle";
-    get_frame_height_test_g "get_frame_height attack1" 82.5 "intro";
     handle_attack_test "handle_attack_1 sets correct animation" "attack_1"
       Knight.handle_attack_1;
     handle_attack_test "handle_attack_2 sets correct animation" "attack_2"
       Knight.handle_attack_2;
     handle_attack_test "handle_ultimate sets correct animation" "ult"
       Knight.handle_ultimate;
+  ]
+
+let guardian_tests =
+  [
+    get_frame_height_test_g "get_frame_height idle" 506. "idle";
+    get_frame_height_test_g "get_frame_height attack1" 82.5 "intro";
   ]
 
 let sprite_tests = []
