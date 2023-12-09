@@ -83,6 +83,19 @@ let dec_health_test name exp n =
   let _ = Knight.dec_health guardian n in
   eq name exp guardian.health
 
+let handle_attack_test name expected_animation attack =
+  Printf.printf "Before handle_attack_1, State: %s, Animation: %s\n"
+    (States.KnightStates.to_string knight.state)
+    (AnimatedSprite.get_anim_name knight.animations);
+
+  let _ = attack knight in
+
+  Printf.printf "After handle_attack_1, State: %s, Animation: %s\n"
+    (States.KnightStates.to_string knight.state)
+    (AnimatedSprite.get_anim_name knight.animations);
+
+  eq name expected_animation (AnimatedSprite.get_anim_name knight.animations)
+
 let knight_tests =
   [
     create_knight_animation_test "create_knight_animation"
@@ -114,6 +127,12 @@ let guardian_tests =
   [
     get_frame_height_test_g "get_frame_height idle" 506. "idle";
     get_frame_height_test_g "get_frame_height attack1" 82.5 "intro";
+    handle_attack_test "handle_attack_1 sets correct animation" "attack_1"
+      Knight.handle_attack_1;
+    handle_attack_test "handle_attack_2 sets correct animation" "attack_2"
+      Knight.handle_attack_2;
+    handle_attack_test "handle_ultimate sets correct animation" "ult"
+      Knight.handle_ultimate;
   ]
 
 let sprite_tests = []
