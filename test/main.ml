@@ -36,8 +36,6 @@ let setup () =
 
 let knight, guardian, statusbar = setup ()
 
-(* !: Beginning of Knight Helper Functions *)
-
 let get_frame_height_test_k name exp anim =
   let _ = AnimatedSprite.switch_animation knight.animations anim in
   eq name exp (Knight.get_frame_height knight)
@@ -208,6 +206,8 @@ let knight_tests =
     get_frame_width_test_k "get_frame_width attack1" 204. "attack_1";
     handle_jump_input_test_k "handle_jump_input" States.KnightStates.Jump
       Constants.ground_y;
+    handle_death_anim_k "handle_death_anim knight" "death";
+    handle_idle_anim_k "handle_idle_anim knight" "idle";
     mana_regen_test "mana_regen initial" 1000. 1000.;
     mana_regen_test "mana_regen 1" 999. 998.;
     dec_health_test "dec_health 1000"
