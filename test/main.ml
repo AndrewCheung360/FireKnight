@@ -49,14 +49,11 @@ let handle_jump_input_test_k name exp init_y =
   eq name exp (Knight.handle_jump_input knight)
 
 let handle_knight_anim_test name expected_animation animation =
-  (* Printf.printf "Before %s, State: %s, Animation: %s\n" expected_animation
-     (States.KnightStates.to_string knight.state) (AnimatedSprite.get_anim_name
-     knight.animations); *)
-  let _ = animation knight in
-
-  (* Printf.printf "After %s, State: %s, Animation: %s\n" expected_animation
-     (States.KnightStates.to_string knight.state) (AnimatedSprite.get_anim_name
-     knight.animations); *)
+  let _ =
+    knight.position <-
+      Vector2.create (Vector2.x knight.position) Constants.ground_y;
+    animation knight
+  in
   eq name expected_animation (AnimatedSprite.get_anim_name knight.animations)
 
 (* !: End of Knight Helper Functions *)
