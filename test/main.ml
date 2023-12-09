@@ -36,6 +36,7 @@ let setup () =
 
 let knight, guardian, statusbar = setup ()
 
+(* !: Beginning of Knight Helper Functions *)
 let get_frame_height_test_k name exp anim =
   let _ = AnimatedSprite.switch_animation knight.animations anim in
   eq name exp (Knight.get_frame_height knight)
@@ -56,6 +57,78 @@ let handle_knight_anim_test name expected_animation animation =
   in
   eq name expected_animation (AnimatedSprite.get_anim_name knight.animations)
 
+let mana_regen_test name exp m =
+  let _ =
+    knight.mana <- m;
+    Knight.mana_regen knight
+  in
+  eq name exp knight.mana
+
+let dec_health_test name exp n =
+  let _ = Knight.dec_health guardian n in
+  eq name exp guardian.health
+
+let handle_knockback_test name exp init_x =
+  let _ =
+    knight.position <- Vector2.create init_x (Vector2.y knight.position);
+    Knight.handle_knockback knight
+  in
+  eq name exp
+    (Vector2.x knight.position, AnimatedSprite.get_anim_name knight.animations)
+
+let reset_atk_hurt_test name exp init_atk init_hurt =
+  let _ =
+    knight.animations.current_frame <- 7;
+    knight.attack_landed <- init_atk;
+    knight.hurt <- init_hurt;
+    Knight.reset_atk_hurt knight
+  in
+  eq name exp (knight.attack_landed, knight.hurt)
+
+let inc_gold_test name exp init_gold n =
+  let _ =
+    knight.gold <- init_gold;
+    Knight.inc_gold knight n
+  in
+  eq name exp knight.gold
+
+let hurt_box_test_k name exp anim init_x init_y =
+  let _ =
+    knight.position <- Vector2.create init_x init_y;
+    AnimatedSprite.switch_animation knight.animations anim
+  in
+  let h = Knight.hurt_box knight in
+  eq name exp
+    (Rectangle.x h, Rectangle.y h, Rectangle.width h, Rectangle.height h)
+
+let hit_box_helper_test_k name exp anim x y w h init_x init_y index =
+  let _ =
+    knight.position <- Vector2.create init_x init_y;
+    AnimatedSprite.switch_animation knight.animations anim;
+    knight.animations.current_frame <- index
+  in
+  let hit = Knight.hit_box_helper x y w h knight in
+  eq name exp
+    (Rectangle.x hit, Rectangle.y hit, Rectangle.width hit, Rectangle.height hit)
+
+let hit_box_test_k name exp anim state index init_x init_y =
+  let _ =
+    knight.position <- Vector2.create init_x init_y;
+    AnimatedSprite.switch_animation knight.animations anim;
+    knight.state <- state;
+    knight.animations.current_frame <- index
+  in
+  let hit =
+    match Knight.hit_box knight with
+    | None -> Rectangle.create 0. 0. 0. 0.
+    | Some r -> r
+  in
+  eq name exp
+    (Rectangle.x hit, Rectangle.y hit, Rectangle.width hit, Rectangle.height hit)
+
+let handle_attack_input_test name exp atk =
+  eq name exp (Knight.handle_attack_input knight atk)
+
 (* !: End of Knight Helper Functions *)
 
 (* !: Beginning of Frost Guardian Helper Functions *)
@@ -74,15 +147,6 @@ let handle_idle_anim_g name exp =
 let handle_punch_anim_g name exp =
   let _ = FrostGuardian.handle_punch guardian in
   eq name exp (AnimatedSprite.get_anim_name guardian.animations)
-(* !: Beginning of Frost Guardian Helper Functions *)
-
-let handle_knockback_test name exp init_x =
-  let _ =
-    knight.position <- Vector2.create init_x (Vector2.y knight.position);
-    Knight.handle_knockback knight
-  in
-  eq name exp
-    (Vector2.x knight.position, AnimatedSprite.get_anim_name knight.animations)
 
 let set_hurt_state_g name exp =
   let _ =
@@ -98,16 +162,47 @@ let set_dead_state_g name exp =
   in
   eq name exp guardian.state
 
-let mana_regen_test name exp m =
+let handle_state_test_g name exp state =
   let _ =
-    knight.mana <- m;
-    Knight.mana_regen knight
+    guardian.state <- state;
+    FrostGuardian.handle_state guardian
   in
-  eq name exp knight.mana
+  eq name exp (AnimatedSprite.get_anim_name knight.animations)
 
-let dec_health_test name exp n =
-  let _ = Knight.dec_health guardian n in
-  eq name exp guardian.health
+let hurt_box_test_g name exp anim init_x init_y =
+  let _ =
+    guardian.position <- Vector2.create init_x init_y;
+    AnimatedSprite.switch_animation guardian.animations anim
+  in
+  let h = FrostGuardian.hurt_box guardian in
+  eq name exp
+    (Rectangle.x h, Rectangle.y h, Rectangle.width h, Rectangle.height h)
+
+let hit_box_helper_test_g name exp anim x y w h init_x init_y index =
+  let _ =
+    guardian.position <- Vector2.create init_x init_y;
+    AnimatedSprite.switch_animation guardian.animations anim;
+    knight.animations.current_frame <- index
+  in
+  let hit = FrostGuardian.hit_box_helper x y w h guardian in
+  eq name exp
+    (Rectangle.x hit, Rectangle.y hit, Rectangle.width hit, Rectangle.height hit)
+
+let hit_box_test_g name exp anim state index init_x init_y =
+  let _ =
+    guardian.position <- Vector2.create init_x init_y;
+    AnimatedSprite.switch_animation guardian.animations anim;
+    guardian.state <- state;
+    guardian.animations.current_frame <- index
+  in
+  let hit =
+    match FrostGuardian.hit_box guardian with
+    | None -> Rectangle.create 0. 0. 0. 0.
+    | Some r -> r
+  in
+
+  eq name exp
+    (Rectangle.x hit, Rectangle.y hit, Rectangle.width hit, Rectangle.height hit)
 
 (* !: Beginning of Sprite Helper Functions*)
 let handle_get_test name exp get_name =
@@ -115,63 +210,6 @@ let handle_get_test name exp get_name =
   eq name exp act
 
 (* !: End of Sprite Helper Functions *)
-
-let reset_atk_hurt_test name exp init_atk init_hurt =
-  let _ =
-    knight.animations.current_frame <- 7;
-    knight.attack_landed <- init_atk;
-    knight.hurt <- init_hurt;
-    Knight.reset_atk_hurt knight
-  in
-  eq name exp (knight.attack_landed, knight.hurt)
-
-let inc_gold_test name exp init_gold n =
-  let _ =
-    knight.gold <- init_gold;
-    Knight.inc_gold knight n
-  in
-  eq name exp knight.gold
-
-let hurt_box_test name exp anim init_x init_y =
-  let _ =
-    knight.position <- Vector2.create init_x init_y;
-    AnimatedSprite.switch_animation knight.animations anim
-  in
-  let h = Knight.hurt_box knight in
-  eq name exp
-    (Rectangle.x h, Rectangle.y h, Rectangle.width h, Rectangle.height h)
-
-let hit_box_helper_test name exp anim x y w h init_x init_y index =
-  let _ =
-    knight.position <- Vector2.create init_x init_y;
-    AnimatedSprite.switch_animation knight.animations anim;
-    knight.animations.current_frame <- index
-  in
-  let hit = Knight.hit_box_helper x y w h knight in
-  eq name exp
-    (Rectangle.x hit, Rectangle.y hit, Rectangle.width hit, Rectangle.height hit)
-
-let hit_box_test name exp anim state index init_x init_y =
-  let _ =
-    knight.position <- Vector2.create init_x init_y;
-    AnimatedSprite.switch_animation knight.animations anim;
-    knight.state <- state;
-    knight.animations.current_frame <- index
-  in
-  let hit =
-    match Knight.hit_box knight with
-    | None -> Rectangle.create 0. 0. 0. 0.
-    | Some r -> r
-  in
-  eq name exp
-    (Rectangle.x hit, Rectangle.y hit, Rectangle.width hit, Rectangle.height hit)
-
-let handle_state_test_g name exp state =
-  let _ =
-    guardian.state <- state;
-    FrostGuardian.handle_state guardian
-  in
-  eq name exp (AnimatedSprite.get_anim_name knight.animations)
 
 let knight_tests =
   [
@@ -200,23 +238,27 @@ let knight_tests =
     handle_knockback_test "handle_knockback" (0., "hurt") (-15.);
     reset_atk_hurt_test "reset_atk_hurt" (false, false) true true;
     inc_gold_test "inc_gold 1000" 0 (-1000) 1000;
-    hurt_box_test "hurt_box idle" (0., 320., 250., 180.) "idle" 0. (-500.);
-    hit_box_helper_test "hit_box_helper atk1" (200., 561., 176., 328.)
+    hurt_box_test_k "hurt_box idle" (0., 320., 250., 180.) "idle" 0. (-500.);
+    hit_box_helper_test_k "hit_box_helper atk1" (200., 561., 176., 328.)
       "attack_1" 200. 0. 176 328 0. Constants.ground_y 0;
-    hit_box_test "hit_box atk1 i:4" (200., 393., 176., 328.) "attack_1"
+    hit_box_test_k "hit_box atk1 i:4" (200., 393., 176., 328.) "attack_1"
       Attack1Right 4 0. Constants.ground_y;
-    hit_box_test "hit_box atk2 i:4" (0., 553., 340., 172.) "attack_2"
+    hit_box_test_k "hit_box atk2 i:4" (0., 553., 340., 172.) "attack_2"
       Attack2Right 4 0. Constants.ground_y;
-    hit_box_test "hit_box atk2 i:5" (0., 513., 408., 212.) "attack_2"
+    hit_box_test_k "hit_box atk2 i:5" (0., 513., 408., 212.) "attack_2"
       Attack2Right 5 0. Constants.ground_y;
-    hit_box_test "hit_box atk2 i:6" (0., 525., 316., 200.) "attack_2"
+    hit_box_test_k "hit_box atk2 i:6" (0., 525., 316., 200.) "attack_2"
       Attack2Right 6 0. Constants.ground_y;
-    hit_box_test "hit_box atk3 i:4" (172., 409., 284., 276.) "attack_3"
+    hit_box_test_k "hit_box atk3 i:4" (172., 409., 284., 276.) "attack_3"
       Attack3Right 4 0. Constants.ground_y;
-    hit_box_test "hit_box ult i:12" (0., 365., 480., 360.) "ult" UltimateRight
+    hit_box_test_k "hit_box ult i:12" (0., 365., 480., 360.) "ult" UltimateRight
       12 0. Constants.ground_y;
-    hit_box_test "hit_box atk2 i:7" (0., 0., 0., 0.) "attack_2" Attack2Right 7
+    hit_box_test_k "hit_box atk2 i:7" (0., 0., 0., 0.) "attack_2" Attack2Right 7
       0. Constants.ground_y;
+    handle_attack_input_test "handle_attack_input attack1" Attack1Right "atk1";
+    handle_attack_input_test "handle_attack_input attack2" Attack2Right "atk2";
+    handle_attack_input_test "handle_attack_input attack3" Attack3Right "atk3";
+    handle_attack_input_test "handle_attack_input ultimate" UltimateRight "ult";
   ]
 
 let guardian_tests =
@@ -229,6 +271,16 @@ let guardian_tests =
     set_hurt_state_g "set_hurt_state_input" States.GuardianStates.Hurt;
     set_dead_state_g "set_dead_state_input" States.GuardianStates.Death;
     handle_state_test_g "handle_state: Idle" "idle" States.GuardianStates.Idle;
+    hurt_box_test_g "hurt_box idle" (900., 225., 450., 500.) "idle" (-900.)
+      Constants.ground_y;
+    hit_box_helper_test_g "hit_box_helper punch" (900., 340., 400., 300.)
+      "punch" 0. 88. 400 300 (-900.) Constants.ground_y 6;
+    hit_box_test_g "hit_box punch i:6" (900., 340., 400., 300.) "punch" Punch 6
+      (-900.) Constants.ground_y;
+    hit_box_test_g "hit_box punch i:7" (0., 0., 0., 0.) "punch" Punch 7 (-900.)
+      Constants.ground_y;
+    hit_box_test_g "hit_box idle i:0" (0., 0., 0., 0.) "idle" Punch 0 (-900.)
+      Constants.ground_y;
   ]
 
 let sprite_tests =
