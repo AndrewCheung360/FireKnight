@@ -66,6 +66,19 @@ let handle_idle_anim_k name exp =
   let _ = Knight.handle_idle knight in
   eq name exp (AnimatedSprite.get_anim_name knight.animations)
 
+let handle_attack_test name expected_animation attack =
+  Printf.printf "Before handle_attack_1, State: %s, Animation: %s\n"
+    (States.KnightStates.to_string knight.state)
+    (AnimatedSprite.get_anim_name knight.animations);
+
+  let _ = attack knight in
+
+  Printf.printf "After handle_attack_1, State: %s, Animation: %s\n"
+    (States.KnightStates.to_string knight.state)
+    (AnimatedSprite.get_anim_name knight.animations);
+
+  eq name expected_animation (AnimatedSprite.get_anim_name knight.animations)
+
 let knight_tests =
   [
     create_knight_animation_test "create_knight_animation"
@@ -83,6 +96,12 @@ let knight_tests =
     handle_jump_input_test_k "handle_jump_input" States.KnightStates.Jump;
     handle_death_anim_k "handle_death_anim" "death";
     handle_idle_anim_k "handle_idle_anim" "idle";
+    handle_attack_test "handle_attack_1 sets correct animation" "attack_1"
+      Knight.handle_attack_1;
+    handle_attack_test "handle_attack_2 sets correct animation" "attack_2"
+      Knight.handle_attack_2;
+    handle_attack_test "handle_ultimate sets correct animation" "ult"
+      Knight.handle_ultimate;
   ]
 
 let guardian_tests = [ get_frame_height_test_g "get_frame_height idle" 506. ]
