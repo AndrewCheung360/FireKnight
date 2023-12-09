@@ -65,7 +65,7 @@ let handle_death_anim_k name exp =
   eq name exp (AnimatedSprite.get_anim_name knight.animations)
 
 let handle_idle_anim_k name exp =
-  let _ = FrostGuardian.handle_idle guardian in
+  let _ = Knight.handle_idle knight in
   eq name exp (AnimatedSprite.get_anim_name knight.animations)
 
 let handle_knockback_test name exp init_x =
@@ -134,8 +134,8 @@ let knight_tests =
     get_frame_height_test_k "get_frame_height attack1" 164. "attack_1";
     get_frame_width_test_k "get_frame_width attack1" 204. "attack_1";
     handle_jump_input_test_k "handle_jump_input" States.KnightStates.Jump;
-    handle_death_anim_k "handle_death_anim" "death";
-    handle_idle_anim_k "handle_idle_anim" "idle";
+    handle_death_anim_k "handle_death_anim knight" "death";
+    handle_idle_anim_k "handle_idle_anim knight" "idle";
     mana_regen_test "mana_regen initial" 1000. 1000.;
     mana_regen_test "mana_regen 1" 999. 998.;
     dec_health_test "dec_health 1000"
@@ -154,9 +154,9 @@ let guardian_tests =
   [
     get_frame_height_test_g "get_frame_height idle" 506. "idle";
     get_frame_height_test_g "get_frame_height attack1" 82.5 "intro";
-    handle_death_anim_g "handle_death_anim" "death";
-    handle_idle_anim_g "handle_idle_anim" "idle";
-    handle_punch_anim_g "handle_punch_anim" "punch";
+    handle_death_anim_g "handle_death_anim guard" "death";
+    handle_idle_anim_g "handle_idle_anim guard" "idle";
+    handle_punch_anim_g "handle_punch_anim guard" "punch";
   ]
 
 let sprite_tests = []
