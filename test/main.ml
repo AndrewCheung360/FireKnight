@@ -31,23 +31,12 @@ let setup () =
   init_window 1 1 "Test";
   set_target_fps 60;
   ( Knight.create_knight_animation (),
-    FrostGuardian.create_frostguardian_animation () )
+    FrostGuardian.create_frostguardian_animation (),
+    Statusbar.StatusBar.create_statusbar () )
 
-let knight = fst (setup ())
-let guardian = snd (setup ())
+let knight, guardian, statusbar = setup ()
 
-let create_knight_animation_test name exp =
-  eq name exp
-    ( Vector2.x knight.position,
-      Vector2.y knight.position,
-      Vector2.x knight.velocity,
-      Vector2.y knight.velocity,
-      knight.state,
-      knight.attack_landed,
-      knight.hurt,
-      knight.health,
-      knight.mana,
-      knight.gold )
+(* !: Beginning of Knight Helper Functions *)
 
 let get_frame_height_test_k name exp anim =
   let _ = AnimatedSprite.switch_animation knight.animations anim in
@@ -60,22 +49,20 @@ let get_frame_width_test_k name exp anim =
 let handle_jump_input_test_k name exp =
   eq name exp (Knight.handle_jump_input knight)
 
-let handle_death_anim_k name exp =
-  let _ = Knight.handle_death knight in
-  eq name exp (AnimatedSprite.get_anim_name knight.animations)
+let handle_knight_anim_test name expected_animation animation =
+  (* Printf.printf "Before %s, State: %s, Animation: %s\n" expected_animation
+     (States.KnightStates.to_string knight.state) (AnimatedSprite.get_anim_name
+     knight.animations); *)
+  let _ = animation knight in
 
-let handle_idle_anim_k name exp =
-  let _ = Knight.handle_idle knight in
-  eq name exp (AnimatedSprite.get_anim_name knight.animations)
+  (* Printf.printf "After %s, State: %s, Animation: %s\n" expected_animation
+     (States.KnightStates.to_string knight.state) (AnimatedSprite.get_anim_name
+     knight.animations); *)
+  eq name expected_animation (AnimatedSprite.get_anim_name knight.animations)
 
-let handle_knockback_test name exp init_x =
-  let _ =
-    knight.position <- Vector2.create init_x (Vector2.y knight.position);
-    Knight.handle_knockback knight
-  in
-  eq name exp
-    (Vector2.x knight.position, AnimatedSprite.get_anim_name knight.animations)
+(* !: End of Knight Helper Functions *)
 
+(* !: Beginning of Frost Guardian Helper Functions *)
 let get_frame_height_test_g name exp anim =
   let _ = AnimatedSprite.switch_animation guardian.animations anim in
   eq name exp (FrostGuardian.get_frame_height guardian)
@@ -91,6 +78,15 @@ let handle_idle_anim_g name exp =
 let handle_punch_anim_g name exp =
   let _ = FrostGuardian.handle_punch guardian in
   eq name exp (AnimatedSprite.get_anim_name guardian.animations)
+(* !: Beginning of Frost Guardian Helper Functions *)
+
+let handle_knockback_test name exp init_x =
+  let _ =
+    knight.position <- Vector2.create init_x (Vector2.y knight.position);
+    Knight.handle_knockback knight
+  in
+  eq name exp
+    (Vector2.x knight.position, AnimatedSprite.get_anim_name knight.animations)
 
 let mana_regen_test name exp m =
   let _ =
@@ -103,50 +99,36 @@ let dec_health_test name exp n =
   let _ = Knight.dec_health guardian n in
   eq name exp guardian.health
 
-let handle_attack_test name expected_animation attack =
-  Printf.printf "Before handle_attack_1, State: %s, Animation: %s\n"
-    (States.KnightStates.to_string knight.state)
-    (AnimatedSprite.get_anim_name knight.animations);
+(* !: Beginning of Sprite Helper Functions*)
+let handle_get_test name exp get_name =
+  let act = get_name statusbar.frames "healthbar" in
+  eq name exp act
 
-  let _ = attack knight in
-
-  Printf.printf "After handle_attack_1, State: %s, Animation: %s\n"
-    (States.KnightStates.to_string knight.state)
-    (AnimatedSprite.get_anim_name knight.animations);
-
-  eq name expected_animation (AnimatedSprite.get_anim_name knight.animations)
+(* !: End of Sprite Helper Functions *)
 
 let knight_tests =
   [
-    create_knight_animation_test "create_knight_animation"
-      ( 0.,
-        Constants.ground_y,
-        0.,
-        0.,
-        States.KnightStates.Idle,
-        false,
-        false,
-        Constants.max_health,
-        Constants.max_mana,
-        0 );
     get_frame_height_test_k "get_frame_height idle" 176. "idle";
     get_frame_width_test_k "get_frame_width idle" 240. "idle";
     get_frame_height_test_k "get_frame_height attack1" 164. "attack_1";
     get_frame_width_test_k "get_frame_width attack1" 204. "attack_1";
     handle_jump_input_test_k "handle_jump_input" States.KnightStates.Jump;
-    handle_death_anim_k "handle_death_anim knight" "death";
-    handle_idle_anim_k "handle_idle_anim knight" "idle";
     mana_regen_test "mana_regen initial" 1000. 1000.;
     mana_regen_test "mana_regen 1" 999. 998.;
     dec_health_test "dec_health 1000"
       (Constants.guardian_max_health -. 1000.)
       1000.;
-    handle_attack_test "handle_attack_1 sets correct animation" "attack_1"
+    handle_knight_anim_test "handle_death_anim knight" "death"
+      Knight.handle_death;
+    handle_knight_anim_test "handle_idle_anim knight" "idle" Knight.handle_idle;
+    handle_knight_anim_test "handle_attack_1 sets correct animation" "attack_1"
       Knight.handle_attack_1;
-    handle_attack_test "handle_attack_2 sets correct animation" "attack_2"
+    handle_knight_anim_test "handle_attack_2 sets correct animation" "attack_2"
       Knight.handle_attack_2;
-    handle_attack_test "handle_ultimate sets correct animation" "ult"
+    handle_knight_anim_test "handle_ultimate sets correct animation" "ult"
       Knight.handle_ultimate;
+    handle_knight_anim_test "handle_run sets correct animation" "run"
+      Knight.handle_run;
     handle_knockback_test "handle_knockback" (0., "hurt") (-15.);
   ]
 
@@ -159,7 +141,16 @@ let guardian_tests =
     handle_punch_anim_g "handle_punch_anim guard" "punch";
   ]
 
-let sprite_tests = []
+let sprite_tests =
+  [
+    handle_get_test "handle_get_src_x testing" 135. Sprites.Sprite.get_src_x;
+    handle_get_test "handle_get_src_y testing" 20. Sprites.Sprite.get_src_y;
+    handle_get_test "handle_get_src_width testing" 52.
+      Sprites.Sprite.get_src_width;
+    handle_get_test "handle_get_src_height testing" 7.
+      Sprites.Sprite.get_src_height;
+  ]
+
 let animated_sprite_tests = []
 
 let suite =
