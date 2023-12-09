@@ -143,6 +143,31 @@ let hurt_box_test name exp anim init_x init_y =
   eq name exp
     (Rectangle.x h, Rectangle.y h, Rectangle.width h, Rectangle.height h)
 
+let hit_box_helper_test name exp anim x y w h init_x init_y index =
+  let _ =
+    knight.position <- Vector2.create init_x init_y;
+    AnimatedSprite.switch_animation knight.animations anim;
+    knight.animations.current_frame <- index
+  in
+  let hit = Knight.hit_box_helper x y w h knight in
+  eq name exp
+    (Rectangle.x hit, Rectangle.y hit, Rectangle.width hit, Rectangle.height hit)
+
+let hit_box_test name exp anim state index init_x init_y =
+  let _ =
+    knight.position <- Vector2.create init_x init_y;
+    AnimatedSprite.switch_animation knight.animations anim;
+    knight.state <- state;
+    knight.animations.current_frame <- index
+  in
+  let hit =
+    match Knight.hit_box knight with
+    | None -> Rectangle.create 0. 0. 0. 0.
+    | Some r -> r
+  in
+  eq name exp
+    (Rectangle.x hit, Rectangle.y hit, Rectangle.width hit, Rectangle.height hit)
+
 let knight_tests =
   [
     get_frame_height_test_k "get_frame_height idle" 176. "idle";
@@ -168,6 +193,22 @@ let knight_tests =
     reset_atk_hurt_test "reset_atk_hurt" (false, false) true true;
     inc_gold_test "inc_gold 1000" 0 (-1000) 1000;
     hurt_box_test "hurt_box idle" (0., 320., 250., 180.) "idle" 0. (-500.);
+    hit_box_helper_test "hit_box_helper atk1" (200., 561., 176., 328.)
+      "attack_1" 200. 0. 176 328 0. Constants.ground_y 0;
+    hit_box_test "hit_box atk1 i:4" (200., 393., 176., 328.) "attack_1"
+      Attack1Right 4 0. Constants.ground_y;
+    hit_box_test "hit_box atk2 i:4" (0., 553., 340., 172.) "attack_2"
+      Attack2Right 4 0. Constants.ground_y;
+    hit_box_test "hit_box atk2 i:5" (0., 513., 408., 212.) "attack_2"
+      Attack2Right 5 0. Constants.ground_y;
+    hit_box_test "hit_box atk2 i:6" (0., 525., 316., 200.) "attack_2"
+      Attack2Right 6 0. Constants.ground_y;
+    hit_box_test "hit_box atk3 i:4" (172., 409., 284., 276.) "attack_3"
+      Attack3Right 4 0. Constants.ground_y;
+    hit_box_test "hit_box ult i:12" (0., 365., 480., 360.) "ult" UltimateRight
+      12 0. Constants.ground_y;
+    hit_box_test "hit_box atk2 i:7" (0., 0., 0., 0.) "attack_2" Attack2Right 7
+      0. Constants.ground_y;
   ]
 
 let guardian_tests =
