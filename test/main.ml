@@ -75,6 +75,7 @@ let handle_idle_anim_g name exp =
 let handle_punch_anim_g name exp =
   let _ = FrostGuardian.handle_punch guardian in
   eq name exp (AnimatedSprite.get_anim_name guardian.animations)
+
 (* !: End of Frost Guardian Helper Functions *)
 
 (* !: Beginning of Sprite Helper Functions*)
@@ -130,6 +131,20 @@ let set_dead_state_g name exp =
   in
   eq name exp guardian.state
 
+let set_hurt_state_g name exp =
+  let _ =
+    guardian.hurt <- true;
+    FrostGuardian.set_hurt_state guardian
+  in
+  eq name exp guardian.state
+
+let set_dead_state_g name exp =
+  let _ =
+    guardian.health <- 0.;
+    FrostGuardian.set_dead_state guardian
+  in
+  eq name exp guardian.state
+
 let mana_regen_test name exp m =
   let _ =
     knight.mana <- m;
@@ -140,6 +155,38 @@ let mana_regen_test name exp m =
 let dec_health_test name exp n =
   let _ = Knight.dec_health guardian n in
   eq name exp guardian.health
+
+let reset_atk_hurt_test name exp init_atk init_hurt =
+  let _ =
+    knight.animations.current_frame <- 7;
+    knight.attack_landed <- init_atk;
+    knight.hurt <- init_hurt;
+    Knight.reset_atk_hurt knight
+  in
+  eq name exp (knight.attack_landed, knight.hurt)
+
+let inc_gold_test name exp init_gold n =
+  let _ =
+    knight.gold <- init_gold;
+    Knight.inc_gold knight n
+  in
+  eq name exp knight.gold
+
+let hurt_box_test name exp anim init_x init_y =
+  let _ =
+    knight.position <- Vector2.create init_x init_y;
+    AnimatedSprite.switch_animation knight.animations anim
+  in
+  let h = Knight.hurt_box knight in
+  eq name exp
+    (Rectangle.x h, Rectangle.y h, Rectangle.width h, Rectangle.height h)
+
+let handle_state_test_g name exp state =
+  let _ =
+    guardian.state <- state;
+    FrostGuardian.handle_state guardian
+  in
+  eq name exp (AnimatedSprite.get_anim_name knight.animations)
 
 let reset_atk_hurt_test name exp init_atk init_hurt =
   let _ =
