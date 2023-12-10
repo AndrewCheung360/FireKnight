@@ -1,5 +1,6 @@
-(** The Background module handles the background rendering. *)
+(** This contains the Background module *)
 
+(** The Background module handles the background rendering. *)
 module Background : sig
   val ice_background_texture : Raylib.Texture.t option ref
   (** Reference to the ice background texture. *)

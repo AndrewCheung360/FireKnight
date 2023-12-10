@@ -1,5 +1,6 @@
-(** This module defines the Knight character within the game. *)
+(** This contains the Knight Module *)
 
+(** This module defines the Knight character within the game. *)
 module Knight : sig
   type t = {
     mutable position : Raylib.Vector2.t;

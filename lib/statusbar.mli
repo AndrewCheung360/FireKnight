@@ -1,5 +1,6 @@
-(** This module defines the StatusBars, like health and mana, in the game. *)
+(** This contains the StatusBar module *)
 
+(** This module defines the StatusBars, like health and mana, in the game. *)
 module StatusBar : sig
   type t = {
     sprite_sheet : Raylib.Texture.t;

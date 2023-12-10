@@ -1,5 +1,6 @@
-(** This module defines constants used throughout the game *)
+(** This contains the Constants Module *)
 
+(** This module defines constants used throughout the game *)
 module Constants : sig
   (** The different states the game can be in. *)
   type game_state =

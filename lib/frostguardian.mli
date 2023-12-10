@@ -1,5 +1,6 @@
-(** This module defines the FrostGuardian character in the game. *)
+(** This contains the FrostGuardian Module *)
 
+(** This module defines the FrostGuardian character in the game. *)
 module FrostGuardian : sig
   type t = {
     mutable position : Raylib.Vector2.t;

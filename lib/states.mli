@@ -1,4 +1,4 @@
-(** THis module defines the different states of both the Knight and the Frost
+(** This module defines the different states of both the Knight and the Frost
     Guardian *)
 
 (** This module defines the various states the Knight can be in during the game. *)
@@ -34,11 +34,11 @@ end
 module GuardianStates : sig
   (** Enumeration of possible states for the Guardian character. *)
   type state =
-    | Idle  (** The Guardian is idle. *)
-    | Hurt  (** The Guardian is in a hurt state. *)
-    | Intro  (** The Guardian is in an introductory state. *)
-    | Punch  (** The Guardian is performing a punch action. *)
-    | Death  (** The Guardian is in a death state. *)
+    | Idle
+    | Hurt
+    | Intro
+    | Punch
+    | Death
 
   type t = state
   (** Alias for the state type. *)
