@@ -1,4 +1,46 @@
-(**Test Plan: *)
+(** Test Plan:
+
+    Our test plan encompasses both unit and manual testing, covering key modules
+    and functionalities critical to the game's logic as well as its GUI
+    components.
+
+    In unit testing, we used Ounit testing to validate modules such as States,
+    Knight, FrostGuardian, Sprite, and AnimatedSprite. Black box testing is
+    primarily applied, ensuring that functions and modules perform correctly
+    without direct knowledge of their internal implementations. For example, we
+    tested our functions that handled, such as handle_run, the switching of
+    different animations. In addition to this, we also used black box testing
+    when we tested for the different attack inputs that output which animation
+    it is.
+
+    Moreover, we used glass box testing to leverage to further validate our
+    Knight and Frost Guardian modules with our internal knowledge of states and
+    conditions. For example, we tested the hitboxes for both the Frost Guardian
+    and Knight to verify that each animation had a set hurtbox. We also tested
+    the knockback for whenever the Frost Guardian punches the Fireknight. This
+    was tested to ensure that our overlap function was working correctly and
+    sent the knight back a certain distance. Edge cases, such as the first frame
+    of an animation, are considered to ensure comprehensive testing.
+
+    Automated OUnit testing covers areas such as correctness of state
+    identification, character animations, sprite handling, and more. Manual
+    testing is reserved for GUI testing that requires the game state to be
+    in-loop and/or inputs to be received from the user. Examples of such testing
+    included seeing if attacks correctly accounted for hurt-boxes and hit-boxes
+    over multiple frames, observing if keyboard inputs resulted in the desired
+    behavior, and seeing if the changing states of the characters correctly
+    corresponded with a change of animation. For such testing of the hurt and
+    hitboxes, we have a debugging state variable that corresponds with whether
+    hurt and hitboxes are shown while the game is run.
+
+    Our test suite aims to demonstrate correctness by systematically validating
+    individual functions and their interactions with unit testing. Comprehensive
+    coverage of different states, animations, and user inputs is ensured by
+    validating all functions that can be tested through OUnit and manually
+    testing any that cannot be covered by OUnit. Successful execution of the
+    test suite in addition to our rigorous user testing of our GUI components
+    when running the game provides confidence in the reliability and correctness
+    of our FireKnight system.*)
 
 open OUnit2
 open Fireknight
